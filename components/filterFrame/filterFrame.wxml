@@ -1,0 +1,27 @@
+<view class="filterFrame" style="{{filterFrameFixedFlag?'position: fixed;top: 0':''}}">
+    <view class="filterTitle">
+        <ul>
+            <li wx:for="{{filterTitleArr}}" 
+                bind:tap="toggleCurrentSelectTitle"
+                data-index="{{index}}"
+                class="{{currentSelectTitleId==index||(index==0 && filterTitleArr[0].name!='区域')||(index==1 && filterTitleArr[1].name!='方式')||(index==2 && filterTitleArr[2].name!='租金')||(index==3 && filterTitleArr[3].flag)?'mainColor':''}}" 
+                wx:key="{{index}}">
+                <text >{{item.name}}</text>
+                <icon class="{{'icon icon_xiajiantou_' + (currentSelectTitleId==index?'true':'false')}}"></icon>
+            </li>
+            <li catch:tap="toggleFilterTitleSort">
+                <icon class="{{'icon icon_paixu_' + (filterTitleSort.flag || filterTitleSort.name !='默认'?'true':'false')}}"></icon>
+            </li>
+        </ul>
+    </view>
+
+    <!-- 其他四样 -->
+    <slot 
+         wx:for="{{filterTitleArr}}"
+         wx:key="{{index}}"
+         name="{{index}}">
+    </slot>
+
+    <!-- 排序 sort -->
+    <slot  name="sort"></slot>
+</view>

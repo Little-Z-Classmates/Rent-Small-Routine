@@ -1,0 +1,372 @@
+@main: #f96771;
+@border: #cccccc;
+
+.mainColor {
+    color: @main ;
+}
+
+.mainColorBorder {
+    color: @main  !important;
+    border: 4rpx solid @main  !important;
+}
+
+#logo {
+    height: 220rpx;
+    width: 100%;
+    position: relative;
+    background: linear-gradient(#f96771, #d60036);
+    z-index: 2;
+
+    #logo-z {
+        height: 120rpx;
+        width: 130rpx;
+        position: absolute;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%)
+    }
+
+    .search {
+        width: 600rpx;
+        height: 100rpx;
+        background-color: #ffffff;
+        bottom: 0rpx;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 50%);
+        border-radius: 14rpx;
+        padding: 20rpx;
+        box-shadow: 4rpx 8rpx 16rpx #888888;
+
+        .searchCity {
+            width: 100rpx;
+            height: 60rpx;
+            text-align: center;
+            line-height: 60rpx;
+            float: left;
+
+            .searchCityName {
+                border-right: 2rpx solid #cccccc;
+            }
+        }
+
+        .searchIcon {
+            margin-left: 20rpx;
+            padding-top: 10rpx;
+            float: left;
+        }
+
+        .searchPlace {
+            margin-left: 20rpx;
+            float: left;
+            width: 260rpx;
+            height: 60rpx;
+        }
+    }
+}
+
+.newsSwiper {
+    display: block;
+    height: 300rpx;
+
+    .swiper-image {
+        width: 100%;
+    }
+}
+
+.filterTitleInfo {
+    width: 100%;
+    height: 480rpx;
+    position: absolute;
+    top: 100rpx;
+    left: 0;
+    border-bottom: 2rpx solid @border;
+}
+
+.filterTitleInfoArea {
+    .left {
+        width: 33.3%;
+        height: 100%;
+        position: relative;
+        background-color: #fff;
+
+        li {
+            display: block;
+            width: 80%;
+            line-height: 80rpx;
+            padding-left: 20%;
+        }
+
+        >ul {
+            width: 100%;
+            color: #000;
+
+            >li {
+                ul {
+                    color: #000;
+                    position: absolute;
+                    left: 100%;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: #eee;
+
+                    ul {
+                        color: #000;
+                        background-color: #ccc !important;
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+.filterTitleInfoMode {
+    background-color: #fff;
+
+    ul {
+        display: block;
+        height: 100%;
+        padding: 0 5%;
+
+        li {
+            display: block;
+            text-align: center;
+            line-height: 120rpx;
+            border-bottom: 2rpx solid @border;
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+}
+
+.filterTitleInfoRent {
+    background-color: #fff;
+
+    ul {
+        display: block;
+        height: 320rpx;
+        width: 100%;
+        border-bottom: 2rpx solid @border;
+
+        li {
+            display: block;
+            text-align: center;
+            line-height: 80rpx !important;
+        }
+    }
+
+    .filterPrice {
+        width: 100%;
+        height: 160rpx;
+        overflow: hidden;
+
+        .filterPriceTop {
+            width: 100%;
+            height: 80rpx;
+            overflow: hidden;
+
+            text {
+                float: left;
+                line-height: 80rpx;
+            }
+
+            .van-cell {
+                float: left;
+                position: relative;
+                display: -webkit-flex;
+                display: flex;
+                width: 30%;
+                padding: 4rpx 30rpx;
+                font-size: 28rpx;
+                line-height: 48rpx;
+                color: #333;
+                background-color: #fff;
+                box-sizing: border-box;
+                border: 4rpx solid #f96771;
+                height: 62rpx;
+                border-radius: 16rpx;
+                margin: 10rpx 8.6% 0;
+            }
+        }
+
+        .filterPriceBottom {
+            width: 100%;
+            height: 80rpx;
+            overflow: hidden;
+
+            button {
+                background-color: #f96771;
+                width: 80%;
+                line-height: 76rpx;
+                position: relative;
+                display: block;
+                padding-left: 28rpx;
+                padding-right: 28rpx;
+                font-size: 36rpx;
+                text-align: center;
+                text-decoration: none;
+                border-radius: 10rpx;
+                -webkit-tap-highlight-color: transparent;
+                overflow: hidden;
+            }
+        }
+    }
+
+}
+
+.filterTitleInfoFeature {
+    padding: 20rpx;
+    overflow: hidden;
+    background-color: #fff;
+
+    ul {
+        width: 100%;
+        height: 70%;
+        overflow: hidden;
+        display: block;
+
+        li {
+            float: left;
+            padding: 4rpx 8rpx;
+            margin: 30rpx 14rpx 14rpx 14rpx;
+            border: 4rpx solid black;
+            border-radius: 12rpx;
+        }
+    }
+
+    button {
+        background-color: #f96771;
+        width: 100%;
+        color: #fff;
+        line-height: 76rpx;
+        position: relative;
+        display: block;
+        padding-left: 28rpx;
+        padding-right: 28rpx;
+        font-size: 36rpx;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 10rpx;
+        -webkit-tap-highlight-color: transparent;
+        overflow: hidden;
+        margin-top: 50rpx;
+    }
+}
+
+.filterTitleInfoSort {
+    background-color: #fff;
+
+    ul {
+        display: block;
+        width: 90%;
+        height: 100%;
+        padding: 0 5% 5% 5%;
+
+        li {
+            display: block;
+            text-align: center;
+            line-height: 120rpx;
+            border-bottom: 2rpx solid @border;
+        }
+    }
+}
+
+
+//  房屋版块
+.houseFrame {
+    background: #eee;
+    width: 100%;
+    padding-top: 0;
+    padding-left: 40rpx;
+    padding-right: 40rpx;
+    height: 3000px;
+
+    .title {
+        width: 100%;
+        line-height: 70rpx;
+        text-align: center;
+        color: #f96771;
+        display: block;
+        font-size: 48rpx;
+        padding-top: 50rpx;
+
+    }
+
+    ul {
+        li {
+            width: 100%;
+            height: 600rpx;
+            display: block;
+            background-color: #f6acb1;
+            margin-top: 70rpx;
+            border-radius: 20rpx;
+            box-shadow: 4rpx 8rpx 16rpx #888888;
+
+            image {
+                border-top-left-radius: 20rpx;
+                border-top-right-radius: 20rpx;
+                width:100%;
+                height: 400rpx;
+                display: inline-block;
+                overflow: hidden;
+
+            }
+
+            .houseInfo {
+                padding: 10rpx 20rpx;
+                overflow: hidden;
+                width: 100%;
+                height: 180rpx;
+                display: flex;
+                flex-direction: column;
+
+                .top {
+                    width: 100%;
+                    height: 50rpx;
+
+                    .place,
+                    .price {
+                        font-weight: 600;
+                        overflow: hidden;
+                        float: left;
+                        text-overflow: ellipsis;
+                        white-space: nowrap
+                    }
+
+                    .place {
+                        width: 70%;
+                    }
+
+                    .price {
+                        width: 30%;
+                    }
+                }
+
+                .bottom {
+                    width: 100%;
+                    flex: 1;
+                    font-size: 32rpx;
+                    line-height: 40rpx;
+
+                    >view {
+                        height: 56rpx;
+                        width: 100%;
+                        padding-top: 14rpx;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
+                    }
+                    .feature{
+                        padding-top:12rpx;
+                    }
+                }
+
+            }
+
+        }
+    }
+}

@@ -1,0 +1,38 @@
+{
+  "pages": [
+    "pages/publish/publish",
+    "pages/index/index",
+    "pages/mine/mine"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#f96771",
+    "navigationBarTitleText": "小Z租房",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#000000",
+    "selectedColor": "#f96771",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/static/images/未选中首页.png",
+        "selectedIconPath": "/static/images/首页.png"
+      },
+      {
+        "pagePath": "pages/publish/publish",
+        "text": "发布",
+        "iconPath": "/static/images/未选中发布.png",
+        "selectedIconPath": "/static/images/发布.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "/static/images/未选中我的.png",
+        "selectedIconPath": "/static/images/我的.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

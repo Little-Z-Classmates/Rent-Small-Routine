@@ -1,0 +1,542 @@
+@main: #f96771;
+@border: #cccccc;
+
+.icon {
+    width: 40rpx;
+    height: 40rpx;
+
+    &_zhaoxiangji {
+        background: data-uri('../../static/images/照相机.png') no-repeat;
+        background-size: 100% 100%;
+    }
+
+    &_xiaozhaoxiangji {
+        background: data-uri('../../static/images/小相机.png') no-repeat;
+        background-size: 100% 100%;
+    }
+}
+
+.dialog {
+    height: 240rpx;
+    padding: 40rpx;
+
+    .dialogTextarea {
+        border: 1px solid #ccc;
+        height: 160rpx !important;
+        padding-left: 5%;
+        width: 90%;
+        padding-right: 5%;
+
+    }
+}
+
+.publish {
+    background-color: #eee;
+    width: 100%;
+}
+
+//---------- 通用类 ------------
+
+.commonName {
+    padding: 0 40rpx !important;
+    border: 4rpx solid black !important;
+    border-radius: 20rpx !important;
+}
+
+.mainColor {
+    color: @main  !important;
+    border: 4rpx solid @main  !important;
+}
+
+.center {
+    text-align: center
+}
+
+//-----------------------------
+
+// 封面
+.houseFrontCoverOuter {
+    width: 100%;
+    padding: 40rpx 40rpx 0 40rpx;
+
+    .houseFrontCover {
+        width: 100%;
+        height: 400rpx;
+        background-color: #686767;
+        color: #ffffff;
+        position: relative;
+        text-align: center;
+        line-height: 260rpx;
+        border-radius: 20rpx;
+
+        .upLoad-before {
+            .houseFrontCoverTitle {
+                top: 45%;
+                left: 50%;
+                text-align: center;
+                line-height: 320rpx;
+                transform: translate(-50%, -50%);
+                width: 260rpx;
+                height: 260rpx;
+                border: 2rpx solid #eee;
+                border-radius: 50%;
+                position: absolute;
+                background-color: #777;
+
+                .icon {
+                    width: 100rpx;
+                    height: 100rpx;
+                    position: absolute;
+                    top: 40rpx;
+                    left: 76rpx;
+
+                }
+            }
+
+            .additionalTitle {
+                width: 100%;
+                height: 30px;
+                background-color: rgba(204, 204, 204, 0.459);
+                text-align: center;
+                line-height: 30px;
+                position: absolute;
+                bottom: 0;
+                z-index: 3;
+                border-bottom-left-radius: 20rpx;
+                border-bottom-right-radius: 20rpx;
+            }
+        }
+
+
+        image {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            position: absolute;
+            z-index: 2;
+            left: 0;
+            top: 0;
+        }
+    }
+
+    .houseOtherImg {
+        padding-top: 32rpx;
+        width: 100%;
+
+        ul {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+
+            li {
+                width: 140rpx;
+                height: 220rpx;
+                display: block;
+                font-size: 32rpx;
+                color: #666;
+                position: relative;
+
+                .otherImg {
+                    width: 140rpx;
+                    height: 140rpx;
+                    border-radius: 20rpx;
+                    display: inline-block;
+                    overflow: hidden;
+                    background-color: #d4d4d4;
+
+                    .icon {
+                        width: 100rpx;
+                        height: 96rpx;
+                        position: absolute;
+                        top: 22rpx;
+                        left: 22rpx;
+                    }
+                }
+
+                .otherImgInfo {
+                    display: block;
+                    text-align: center;
+                    width: 100%;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+
+                }
+
+                .cancel {
+                    position: absolute;
+                    right: -16rpx;
+                    top: -14rpx;
+                    width: 40rpx;
+                    height: 40rpx;
+                    border-radius: 50%;
+                    background-color: red;
+                    color: #fff;
+                    text-align: center;
+                    line-height: 40rpx;
+                    font-size: 44rpx;
+                }
+            }
+        }
+    }
+}
+
+// 图片类型
+.houseFrontCoverAttentionOuter {
+    width: 100%;
+
+    ul {
+        width: 100%;
+        background-color: #fff;
+        overflow: hidden;
+        display: block;
+        padding-bottom: 20rpx;
+
+        li {
+            display: block;
+            line-height: 60rpx;
+            margin-top: 10px;
+            height: 60rpx;
+            padding-left: 20rpx;
+
+            text {
+                width: 8rpx;
+                height: 60rpx;
+                background-color: red;
+                float: left;
+                margin-right: 20rpx;
+            }
+        }
+    }
+}
+
+// 出租类型
+.mode {
+    padding-top: 20rpx;
+
+    .modeTitle,
+    .modeList {
+        background-color: #fff;
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        line-height: 80rpx;
+        height: 60rpx;
+
+    }
+
+    .modeList {
+        font-size: 40rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding-left: 40rpx;
+        padding-right: 40rpx;
+        line-height: 74rpx;
+        height: 120rpx;
+
+    }
+}
+
+// 地理位置
+.geoPosition {
+    padding-top: 20rpx;
+
+    .geoPositionTitle {
+        background-color: #fff;
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        line-height: 80rpx;
+        height: 60rpx;
+
+    }
+
+    .district {
+        background-color: #fff;
+        font-size: 40rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding-left: 40rpx;
+        padding-right: 40rpx;
+        line-height: 74rpx;
+        height: 120rpx;
+
+        .districtName,
+        .districtDetailed {
+            padding: 0 40rpx;
+            border: 4rpx solid black;
+            border-radius: 20rpx;
+        }
+    }
+}
+
+// 房间
+.roomAndHall {
+    padding-top: 20rpx;
+
+    .roomAndHallTitle {
+        background-color: #fff;
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        line-height: 80rpx;
+        height: 60rpx;
+
+    }
+
+    .roomAndHallInfo {
+        line-height: 80rpx;
+        background-color: #fff;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        picker {
+            float: left;
+            padding: 0px 16rpx;
+            line-height: 56rpx;
+            border: 2rpx solid #ccc;
+            border-radius: 10rpx;
+            height: 56rpx;
+            margin-right: 12rpx;
+
+        }
+
+        .room,
+        .hall {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+// 卫生间
+.toilet {
+    padding-top: 20rpx;
+
+    .toiletTitle,
+    .toiletList {
+        background-color: #fff;
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        line-height: 80rpx;
+        height: 60rpx;
+
+    }
+
+    .toiletList {
+        font-size: 40rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding-left: 40rpx;
+        padding-right: 40rpx;
+        line-height: 74rpx;
+        height: 120rpx;
+
+    }
+}
+
+// 面积,价格
+.acreage,
+.price {
+    padding-top: 20rpx;
+
+    .acreageTitle,
+    .priceTitle {
+        background-color: #fff;
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        line-height: 80rpx;
+        height: 60rpx;
+    }
+
+    .acreageInfo,
+    .priceInfo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        line-height: 80rpx;
+
+        .acreageInput,
+        .priceInput {
+            text-align: center;
+            width: 200rpx;
+            padding: 0 8rpx;
+            border: 2rpx solid #ccc;
+            border-radius: 10rpx;
+            margin-right: 20rpx;
+        }
+    }
+}
+
+// 楼层
+.storey {
+    padding-top: 20rpx;
+
+    .storeyTitle {
+        background-color: #fff;
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        line-height: 80rpx;
+        height: 60rpx;
+    }
+
+    .storeyInfo {
+        line-height: 80rpx;
+        background-color: #fff;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        .allStorey,
+        .inStorey {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            input {
+                text-align: center;
+                margin: 0 6rpx;
+                border: 2rpx solid #ccc;
+                border-radius: 10rpx;
+                width: 60rpx;
+            }
+        }
+    }
+}
+
+// 付款时长
+.payTime {
+    padding-top: 20rpx;
+
+    .payTimeTitle {
+        background-color: #fff;
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        line-height: 80rpx;
+        height: 60rpx;
+    }
+
+    .payTimeInfo {
+        ul {
+            width: 8rpx 20rpx;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 110rpx;
+            background-color: #fff;
+
+            li {
+                padding: 8rpx 20rpx;
+                border: 4rpx solid black;
+                border-radius: 10rpx;
+
+            }
+        }
+    }
+
+
+}
+
+// 特色
+.feature {
+    padding-top: 20rpx;
+
+    .featureTitle {
+        background-color: #fff;
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        line-height: 80rpx;
+        height: 60rpx;
+    }
+
+    .featureInfo {
+        padding: 28rpx 20rpx;
+        background-color: #fff;
+        width: 100%;
+
+        ul {
+            width: 100%;
+            flex-wrap: wrap;
+            display: flex;
+
+            li {
+                padding: 4rpx 8rpx;
+                border: 4rpx solid black;
+                border-radius: 10rpx;
+                margin: 10rpx;
+
+            }
+        }
+    }
+}
+
+// 房源描述
+.houseDescribe {
+    padding-top: 20rpx;
+
+    .houseDescribeTitle {
+        background-color: #fff;
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        line-height: 80rpx;
+        height: 60rpx;
+    }
+
+    .houseInfo {
+        width: 100%;
+        padding: 5%;
+        height: 400rpx;
+        background-color: #fff;
+
+        textarea {
+            border: 2rpx solid #ccc;
+            border-radius: 20rpx;
+            padding: 20rpx;
+            width: auto;
+        }
+    }
+
+
+}
+
+// 联系方式
+.contactWay {
+    padding-top: 20rpx;
+
+    .contactWayTitle {
+        background-color: #fff;
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        line-height: 80rpx;
+        height: 60rpx;
+    }
+
+    .contactWayInfo {
+        background-color: #fff;
+
+        >view {
+            display: flex;
+            line-height: 80rpx;
+            justify-content: center;
+            align-items: center;
+
+            >input {
+                border: 2rpx solid #ccc;
+                padding-left: 20rpx;
+                border-radius: 10rpx;
+                margin-left: 20rpx;
+
+            }
+        }
+    }
+}
+
+// 提交
+.submit{
+    border-radius: 0;
+    margin-top: 20rpx;
+}

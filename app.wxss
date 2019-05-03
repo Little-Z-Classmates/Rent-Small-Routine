@@ -1,0 +1,6 @@
+view,image,input,swiper,swiper-item,text,button{
+  box-sizing: border-box;
+}
+
+
+

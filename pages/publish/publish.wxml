@@ -1,0 +1,216 @@
+<!-- 调用 dialog -->
+<van-dialog use-slot 
+            title="描述"
+            show="{{ dialog.show }}" 
+            show-cancel-button 
+            bind:close="dialogClose" 
+            bind:confirm="dialogSetInfo">
+    <view class="dialog">
+        <textarea bind:blur="setInfo" class="dialogTextarea" value="{{dialog.currentOtherImgInfo}}" focus auto-height placeholder="请输入照片描述信息" />
+    </view>
+</van-dialog>
+<!-- 调用提示 -->
+<van-toast id="van-toast" />
+<view class="publish">
+    <!-- 封面 -->
+    <view class="houseFrontCoverOuter">
+        <!-- 封面 -->
+        <view class="houseFrontCover" catch:tap="addHouseFrontCover">
+            <view class="upLoad-before">
+                <view class="houseFrontCoverTitle">
+                    上传封面
+                    <view class="icon icon_zhaoxiangji"></view>
+                </view>
+                <view class="additionalTitle">点击上传</view>
+            </view>
+            <image hidden="{{!houseFrontCoverImgPath}}" src="{{houseFrontCoverImgPath}}" />
+        </view>
+        <!-- 其他图片 -->
+        <view class="houseOtherImg">
+            <ul>
+                <li wx:if="{{houseOtherImgList.length}}" wx:for="{{houseOtherImgList}}" wx:key="{{index}}">
+                    <image class="otherImg" src="{{item.imgPath}}" />
+                    <view class="otherImgInfo" data-id="{{item.id}}" catch:tap="toggleDialog">
+                        {{item.info}}
+                    </view>
+                    <view class="cancel" data-id="{{item.id}}" catch:tap="removeOtherImg">×</view>
+                </li>
+                <li catch:tap="addOtherImg">
+                    <view class="otherImg">
+                        <view class="icon icon_xiaozhaoxiangji"></view>
+                    </view>
+                    <text class="otherImgInfo">添加照片</text>
+                </li>
+            </ul>
+        </view>
+    </view>
+    <!-- 图片注意 -->
+    <view class="houseFrontCoverAttentionOuter">
+        <ul>
+            <li>
+                <text></text>
+                照片真实明亮,对加速出租有利。
+            </li>
+            <li>
+                <text></text>
+                照片清晰,无水印的实拍照片。
+            </li>
+            <li>
+                <text></text>
+                照片格式不能为动图。
+            </li>
+        </ul>
+    </view>
+    <!-- 出租类型 -->
+    <view class="mode">
+        <view class="modeTitle">出租类型<text style="color:red">*</text></view>
+        <view class="modeList">
+            <view class="{{'commonName ' + (mode.selectModeId == item.id?'mainColor':'')}}" catch:tap="selectMode" data-mode-id="{{item.id}}" wx:for="{{mode.modeList}}" wx:key="{{index}}">
+                {{item.name}}
+            </view>
+        </view>
+    </view>
+    <!-- 地理位置 -->
+    <view class="geoPosition">
+        <view class="geoPositionTitle">地理位置<text style="color:red">*</text></view>
+        <view class="district">
+            <view class="districtName">区</view>
+            <view class="districtDetailed">设置</view>
+        </view>
+    </view>
+    <!-- 房间 -->
+    <view class="roomAndHall">
+        <view class="roomAndHallTitle">房间<text style="color:red">*</text></view>
+        <view class="roomAndHallInfo">
+            <view class="room">
+                <picker mode="selector" bindchange="bindRoomPickerChange" range="{{roomAndHall.room}}" value="{{roomAndHall.roomIndex}}">
+                    {{roomAndHall.room[roomAndHall.roomIndex]}}
+                </picker>
+                室
+            </view>
+            <view class="hall">
+                <picker mode="selector" bindchange="bindHallPickerChange" range="{{roomAndHall.hall}}" value="{{roomAndHall.hallIndex}}">
+                    {{roomAndHall.hall[roomAndHall.hallIndex]}}
+                </picker>
+                厅
+            </view>
+        </view>
+    </view>
+    <!-- 卫生间 -->
+    <view class="toilet">
+        <view class="toiletTitle">卫生间<text style="color:red">*</text></view>
+        <view class="toiletList">
+            <view class="{{'commonName ' + (toilet.selectToiletId == item.id?'mainColor':'')}}" catch:tap="selectToilet" data-toilet-id="{{item.id}}" wx:for="{{toilet.toiletList}}" wx:key="{{index}}">
+                {{item.name}}
+            </view>
+        </view>
+    </view>
+    <!-- 面积 -->
+    <view class="acreage">
+        <view class="acreageTitle">面积<text style="color:red">*</text></view>
+        <view class="acreageInfo">
+            <input class="acreageInput" placeholder-class="center" bindblur="setAcreageValue" value="{{acreageValue}}" type="digit" placeholder="输入面积" />
+            平米
+        </view>
+    </view>
+    <!-- 楼层 -->
+    <view class="storey">
+        <view class="storeyTitle">楼层<text style="color:red">*</text></view>
+        <view class="storeyInfo">
+            <view class="allStorey">
+                一共
+                <input class="allStoreyInput" bindblur="setAllStoreyValue" value="{{storey.allStoreyValue}}" type="number" />
+                楼
+            </view>
+            <view class="inStorey">
+                第
+                <input class="inStoreyInput" bindblur="setInStoreyValue" value="{{storey.inStoreyValue}}" type="number" />
+                楼
+            </view>
+        </view>
+    </view>
+    <!-- 付款时长 -->
+    <view class="payTime">
+        <view class="payTimeTitle">付款时长<text style="color:red">*</text></view>
+        <view class="payTimeInfo">
+             <ul>
+                 <li wx:for="{{payTime.payTimeList}}"
+                     class="{{(payTime.selectPayTimeId == item.id?'mainColor':'')}}" 
+                     catch:tap="selectPayTime" 
+                     data-pay-time-id="{{item.id}}"
+                     wx:key="index">
+                     {{item.name}}
+                 </li>
+             </ul>
+        </view>
+    </view>
+    <!-- 价格 -->
+    <view class="price">
+        <view class="priceTitle">价格<text style="color:red">*</text></view>
+        <view class="priceInfo">
+            <input class="priceInput" 
+                   placeholder-class="center" 
+                   bindblur="setPriceValue" 
+                   value="{{priceValue}}" 
+                   type="digit" 
+                   placeholder="输入价格" />
+            元
+        </view>
+    </view>
+    <!-- 特色 -->
+    <view class='feature'>
+        <view class="featureTitle">特色<text style="color:red">*</text></view>
+        <view class="featureInfo">
+            <ul>
+                <li class="{{item.classFlag?'mainColor':''}}"
+                    catch:tap="setFeatureList"
+                    data-list-id="{{item.id}}"
+                    wx:for="{{feature.featureList}}" 
+                    wx:key="{{index}}">
+                    {{item.name}}
+                </li>
+            </ul>
+        </view>
+    </view>
+    <!-- 房源描述 -->
+    <view class='houseDescribe'>
+        <view class="houseDescribeTitle">房源描述<text style="color:red">*</text></view>
+        <view class="houseInfo">
+             <textarea placeholder="房源描述(最多输入300字)"
+                       maxlength="300"
+                       bindblur="setHouseDescribeValue"
+                       value='{{houseDescribeValue}}'  />
+        </view>   
+    </view>
+    <!-- 联系方式 -->
+    <view class="contactWay">
+        <view class="contactWayTitle">联系方式<text style="color:red">*</text></view>
+        <view class="contactWayInfo">
+            <view class="telephone">
+                <text class="telephoneTitle">电话(必填) : </text>
+                <input type="text"
+                       bindblur="setcontactWayValue" 
+                       data-contact-way-name="telephone"
+                       value="{{contactWay.telephone}}" 
+                       placeholder="请输入电话"/>
+            </view>
+            <view class="weixin">
+                <text class="weixinTitle">微信(选填) : </text>
+                <input type="text" 
+                       bindblur="setcontactWayValue" 
+                       data-contact-way-name="weixin"
+                       value="{{contactWay.weixin}}" 
+                       placeholder="请输入微信号"/>
+            </view>
+            <view class="qq">
+                <text class="qqTitle">QQ(选填) : </text>
+                <input type="text"
+                       bindblur="setcontactWayValue" 
+                       data-contact-way-name="qq"
+                       value="{{contactWay.qq}}" 
+                       placeholder="请输入QQ号"/>
+            </view>
+        </view>
+    </view>
+    <button class="submit" type="primary" bindtap="submitAllInfo">提交</button>
+</view>

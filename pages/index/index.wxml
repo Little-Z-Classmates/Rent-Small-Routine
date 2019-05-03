@@ -1,0 +1,205 @@
+<van-toast id="van-toast" />
+
+<!-- logo 版块 -->
+<view id="logo">
+    <image id="logo-z" src="../../static/images/logoZ.png" />
+    <view class="search">
+        <picker mode="selector" bindchange="bindchangeCity" class="searchCity" range="{{searchCity.city}}" range-key="{{'name'}}" value="{{searchCity.city[searchCity.selectId].id}}">
+            <view class="searchCityName">{{searchCity.city[searchCity.selectId].name}}</view>
+        </picker>
+        <icon type="search" color="#f96771" class="searchIcon" size="20" />
+        <input class="searchPlace" value="" placeholder="请输入地址" placeholder-style="color:#ccc;line-height:30px" />
+    </view>
+</view>
+
+<!-- 轮播图新闻 版块 -->
+<swiper class="newsSwiper" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{5000}}" easing-function="easeInOutCubic" circular="true" duration="{{500}}">
+    <block wx:for="{{swiperImgUrls}}" wx:key="{{index}}">
+        <swiper-item>
+            <image class="swiper-image" src="{{item}}" />
+        </swiper-item>
+    </block>
+</swiper>
+
+<!-- 筛选 版块 -->
+<components-filterFrame 
+  bind:setCurrentSelectTitleId="setCurrentSelectTitleId"
+  bind:setFilterTitleSort="setFilterTitleSort"
+  filterFrameFixedFlag="{{filterFrameFixedFlag}}"
+  filterTitleArr="{{filterFrame.filterTitleArr}}"
+  filterTitleSort="{{filterFrame.filterTitleSort}}"
+  currentSelectTitleId="{{filterFrame.currentSelectTitleId}}">
+    <!-- 地区 -->
+    <view 
+      slot="{{filterFrame.filterTitleArr[0].id}}" 
+      hidden="{{!(filterFrame.filterTitleArr[0].id==filterFrame.currentSelectTitleId)}}"
+      class="filterTitleInfo filterTitleInfoArea">
+        <view class="left">
+            <ul>
+                <li wx:for="{{filterFrame.filterArea.childrenItems}}" 
+                    catch:tap="toggleCurrentSelectLeftId"
+                    class="{{index==filterFrame.filterArea.currentSelectLeftId?'mainColor':''}}"
+                    data-index="{{index}}"
+                    wx:key="{{index}}">
+                    {{item.name}}
+                    <ul style="{{filterFrame.filterArea.currentSelectLeftId==index?'display:block':'display:none'}}">
+                      
+                            <view class="center" >
+                                <li catch:tap="toggleCurrentSelectCenterId"
+                                    class="{{sonIndex==item.currentSelectCenterId?'mainColor':''}}"
+                                    data-index="{{index}}"
+                                    data-son-index="{{sonIndex}}" 
+                                    wx:for-item="sonItem" 
+                                    wx:for-index="sonIndex" 
+                                    wx:for="{{item.childrenItems}}" 
+                                    wx:key="{{sonIndex}}">
+                                    {{sonItem.name }}
+                                    <ul style="{{filterFrame.filterArea.childrenItems[index].currentSelectCenterId == sonIndex?'display:block':'display:none'}}">
+                                        <scroll-view scroll-y  style="height: 480rpx;">
+                                            <view class="right">
+                                                <li class="{{sonSonIndex==sonItem.currentSelectRightId?'mainColor':''}}"
+                                                    catch:tap="toggleCurrentSelectRightId"
+                                                    data-index="{{index}}"
+                                                    data-son-index="{{sonIndex}}"
+                                                    data-son-son-index="{{sonSonIndex}}"
+                                                    wx:for-item="sonSonItem" 
+                                                    wx:for-index="sonSonIndex"
+                                                    wx:for="{{sonItem.childrenItems}}" 
+                                                    wx:key="{{sonSonIndex}}">
+                                                    {{sonSonItem.name}}
+                                                </li>
+                                            </view>
+                                        </scroll-view>
+                                    </ul>
+                                </li>
+                            </view>
+                      
+
+                    </ul>
+                </li>
+            </ul>
+        </view>  
+    </view>
+
+    <!-- 方式 -->
+    <view 
+        slot="{{filterFrame.filterTitleArr[1].id}}"
+        hidden="{{!(filterFrame.filterTitleArr[1].id==filterFrame.currentSelectTitleId)}}"
+        class="filterTitleInfo filterTitleInfoMode"   >
+      <ul>
+          <li catch:tap="toggleCurrentFilterMode"
+              data-index="{{index}}"
+              data-name="{{item.name}}"
+              class="{{filterFrame.filterMode.currentSelectModeId == index?'mainColor':''}}"
+              wx:for="{{filterFrame.filterMode.modeList}}" 
+              wx:key="{{index}}">
+             {{item.name}}
+          </li>
+      </ul>
+    </view>
+
+    <!-- 租金 -->
+    <view 
+        slot="{{filterFrame.filterTitleArr[2].id}}"
+        hidden="{{!(filterFrame.filterTitleArr[2].id==filterFrame.currentSelectTitleId)}}"
+        class="filterTitleInfo filterTitleInfoRent"   >
+        <ul>
+            <li catch:tap="toggleCurrentFilterRent"
+                data-index="{{index}}"
+                class="{{filterFrame.filterRent.currentSelectRentId==index?'mainColor':''}}"
+                data-name="{{item.name}}"
+                wx:for="{{filterFrame.filterRent.rentList}}" 
+                wx:key="{{index}}">
+                 {{item.name}}
+            </li>
+        </ul>
+        <view class="filterPrice">
+           <view class="filterPriceTop">
+                <van-cell-group>
+                  <van-field
+                    value=""
+                    placeholder="起始价格"
+                    type="number"
+                    bind:blur="getStartPrice"
+                    border="{{ true }}"
+                  />
+                </van-cell-group>
+                <text>—</text>
+                <van-cell-group>
+                  <van-field
+                    value=""
+                    placeholder="最终价格"
+                    type="number"
+                    bind:blur="getEndPrice"
+                    border="{{ true }}"
+                  />
+                </van-cell-group>
+           </view>
+           <view class="filterPriceBottom">
+              <button class="submitPrice" type="primary" bind:tap="filterPrice">查询</button> 
+           </view>
+        </view>
+    </view>
+
+    <!-- 特色 -->
+    <view 
+        slot="{{filterFrame.filterTitleArr[3].id}}"
+        hidden="{{!(filterFrame.filterTitleArr[3].id==filterFrame.currentSelectTitleId)}}"
+        class="filterTitleInfo filterTitleInfoFeature">
+        <ul>
+           <li catch:tap="selectFeature"
+               data-index="{{index}}"
+               class="{{item.selectFlag?'mainColorBorder':''}}"
+               wx:for="{{filterFrame.filterFeature.featureList}}" 
+               wx:key="{{index}}">
+               {{item.name}}
+           </li>
+        </ul>
+        <button class="submitFeature" catch:tap="filterFeature">提交</button>
+    </view>
+
+    <!-- 排序 -->
+    <view slot="sort"
+          hidden="{{!filterFrame.filterTitleSort.flag}}"
+          class="filterTitleInfo filterTitleInfoSort">
+     <ul>
+           <li catch:tap="selectSort"
+               data-index="{{index}}"
+               data-name="{{item.name}}"
+               class="{{filterFrame.filterSort.currentSelectSortId==index?'mainColor':''}}"
+               wx:for="{{filterFrame.filterSort.sortList}}" 
+               wx:key="{{index}}">
+               {{item.name}}
+           </li>
+    </ul>
+    </view>
+</components-filterFrame>
+
+<!-- 房屋 版块 -->
+<view class="houseFrame" style="{{filterFrameFixedFlag?'padding-top: 100rpx;':''}}">
+    <text class="title">精选推荐</text>
+    <ul>
+        <li wx:for="{{houseFrame.houseList}}" wx:key="{{index}}">
+            <image src="{{item.imgPath}}"  lazy-load="{{true}}" class="houseImg" />
+            <view class="houseInfo">
+                <view class="top">
+                    <view class="place">
+                        {{item.place}}
+                    </view>
+                    <view class="price">
+                        <text style="float:right;display:block">{{item.price}}</text>
+                    </view>
+                </view>
+                <view class="bottom">
+                    <view class="mode">
+                        {{item.mode.name}}
+                    </view>
+                    <view class="feature">
+                        特色 : {{item.featureStr}}
+                    </view>
+                </view>
+
+            </view>
+        </li>
+     </ul>
+</view>

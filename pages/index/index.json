@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "components-filterFrame": "../../components/filterFrame/filterFrame",
+    "van-field": "../../miniprogram_npm/vant-weapp/field/index",
+    "van-toast": "../../miniprogram_npm/vant-weapp/toast/index"
+  }
+}

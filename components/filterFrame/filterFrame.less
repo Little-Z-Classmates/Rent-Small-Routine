@@ -1,0 +1,89 @@
+@main: #f96771;
+@border: #cccccc;
+
+.icon {
+    width: 40rpx;
+    height: 40rpx;
+
+    &_paixu_false {
+        background: data-uri('../../static/images/排序.png') no-repeat;
+        background-size: 100% 100%;
+    }
+
+    &_paixu_true {
+        background: data-uri('../../static/images/排序选中.png') no-repeat;
+        background-size: 100% 100%;
+    }
+
+    &_xiajiantou_false {
+        background: data-uri('../../static/images/下箭头.png') no-repeat;
+        background-size: 100% 100%;
+    }
+
+    &_xiajiantou_true {
+        background: data-uri('../../static/images/下箭头选中.png') no-repeat;
+        background-size: 100% 100%;
+    }
+}
+
+.filterFrame {
+    height: 100rpx;
+    width: 100%;
+    border-bottom: 2rpx solid @border;
+    padding: 0 40rpx;
+    position: relative;
+    background-color: #fff;
+    .filterTitle {
+        width: 100%;
+        height: 100%;
+
+        ul {
+            width: 100%;
+            height: 100%;
+            display: block;
+
+            .mainColor {
+                color: @main
+            }
+
+            li {
+                width: 23%;
+                float: left;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                &:last-child{
+                    width: 30rpx;
+                    float: right;
+                }
+                text{
+                    flex:1;
+                    text-align:center;
+                    overflow:hidden;
+                    text-overflow:ellipsis;
+                    white-space:nowrap;
+                    display: inline-block
+                }
+                .icon_paixu_false,
+                .icon_paixu_true {
+                    width: 30rpx;
+                    height: 30rpx;
+                    vertical-align: middle;
+                    float: right;
+                }
+
+                .icon_xiajiantou_false,
+                .icon_xiajiantou_true {
+                    width: 20rpx;
+                    height: 20rpx;
+                }
+            }
+
+        }
+
+
+    }
+
+
+}

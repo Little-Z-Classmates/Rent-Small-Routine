@@ -4,11 +4,26 @@
 <view id="logo">
     <image id="logo-z" src="../../static/images/logoZ.png" />
     <view class="search">
-        <picker mode="selector" bindchange="bindchangeCity" class="searchCity" range="{{searchCity.city}}" range-key="{{'name'}}" value="{{searchCity.city[searchCity.selectId].id}}">
+        <picker mode="selector" 
+                bindchange="bindchangeCity" 
+                class="searchCity" 
+                range="{{searchCity.city}}" 
+                range-key="{{'name'}}" 
+                value="{{searchCity.selectId}}">
             <view class="searchCityName">{{searchCity.city[searchCity.selectId].name}}</view>
         </picker>
         <icon type="search" color="#f96771" class="searchIcon" size="20" />
-        <input class="searchPlace" value="" placeholder="请输入地址" placeholder-style="color:#ccc;line-height:30px" />
+        <input class="searchPlace"
+               value="{{searchPlace.searchPlaceValue}}"
+               bindinput="getSearchPlaceList" 
+               placeholder="请输入地址" 
+               placeholder-style="color:#ccc;line-height:30px" />
+        <!--关键词输入提示列表渲染-->
+        <scroll-view wx:if="{{ searchPlace.searchPlaceValue }}" scroll-y="{{true}}" class="search-place-dataList" >
+            <view class="one-data" wx:for="{{searchPlace.dataList}}" wx:key="{{index}}">
+                {{item.title}}
+            </view>
+        </scroll-view>
     </view>
 </view>
 

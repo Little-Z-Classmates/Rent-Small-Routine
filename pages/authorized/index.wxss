@@ -1,0 +1,19 @@
+/* pages/authorized/index.wxss */
+page {
+  height: 100%;
+}
+.authorized {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
+}
+.authorized > .tip {
+  display: block;
+}
+.authorized > .authorized-btn {
+  display: block;
+  margin: 20rpx 0;
+}

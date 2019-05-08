@@ -1,0 +1,7 @@
+<!--pages/authorized/index.wxml-->
+<view class='authorized'>
+  <view class='tip'>需要授权登陆才可以访问</view>
+  <view class='authorized-btn'>
+    <button type="primary" open-type="getUserInfo" bindgetuserinfo="setInfo">立刻授权登陆</button>
+  </view>
+</view>

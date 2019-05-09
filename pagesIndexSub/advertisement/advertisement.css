@@ -1,0 +1,32 @@
+.advertisement {
+  padding: 20rpx;
+}
+.advertisement .title {
+  font-size: 54rpx;
+  font-weight: 600;
+  text-align: center;
+  padding-top: 20rpx;
+}
+.advertisement .titleImg {
+  width: 100%;
+  height: 480rpx;
+  margin-top: 40rpx;
+}
+.advertisement .adOtherInfoList {
+  overflow: hidden;
+  display: block;
+}
+.advertisement .adOtherInfoList .adOtherInfo {
+  display: block;
+}
+.advertisement .adOtherInfoList .adOtherInfo .adOtherInfoTitle {
+  padding: 30rpx 0 20rpx 0;
+}
+.advertisement .adOtherInfoList .adOtherInfo .adOtherInfoImg {
+  width: 100%;
+  height: 480rpx;
+}
+.advertisement .adOtherInfoList .adOtherInfo .adOtherInfoTxt {
+  text-indent: 2em;
+  font-size: 34rpx;
+}

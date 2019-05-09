@@ -3,8 +3,15 @@
     "pages/index/index",
     "pages/publish/publish",
     "pages/mine/mine",
-    "pages/login/login",
     "pages/authorized/index"
+  ],
+  "subpackages":[
+    {
+      "root": "pagesIndexSub",
+      "pages": [
+        "advertisement/advertisement"
+      ]
+    }
   ],
   "permission": {
     "scope.userLocation": {

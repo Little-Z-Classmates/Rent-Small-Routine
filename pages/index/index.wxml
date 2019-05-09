@@ -19,8 +19,8 @@
                placeholder="请输入地址" 
                placeholder-style="color:#ccc;line-height:30px" />
         <!--关键词输入提示列表渲染-->
-        <scroll-view wx:if="{{ searchPlace.searchPlaceValue }}" scroll-y="{{true}}" class="search-place-dataList" >
-            <view class="one-data" wx:for="{{searchPlace.dataList}}" wx:key="{{index}}">
+        <scroll-view wx:if="{{ searchPlace.searchFlag }}" scroll-y="{{true}}" class="search-place-dataList" >
+            <view bind:tap="setValue" data-value="{{item.title}}" class="one-data" wx:for="{{searchPlace.dataList}}" wx:key="{{index}}">
                 {{item.title}}
             </view>
         </scroll-view>
@@ -29,9 +29,9 @@
 
 <!-- 轮播图新闻 版块 -->
 <swiper class="newsSwiper" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{5000}}" easing-function="easeInOutCubic" circular="true" duration="{{500}}">
-    <block wx:for="{{swiperImgUrls}}" wx:key="{{index}}">
-        <swiper-item>
-            <image class="swiper-image" src="{{item}}" />
+    <block wx:for="{{swiperAd}}" wx:key="{{index}}">
+        <swiper-item bind:tap="navigateToAdPage" data-id="{{item.id}}">
+            <image class="swiper-image" src="{{ baseUrl + item.adFrontImgPath}}" />
         </swiper-item>
     </block>
 </swiper>

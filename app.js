@@ -10,7 +10,8 @@ App({
 
   globalData: {
     userInfo: {},
-    TX_map_key: 'JKBBZ-WNNW4-GCOUI-X66Y3-J7PFF-TGBTM'
+    TX_map_key: 'JKBBZ-WNNW4-GCOUI-X66Y3-J7PFF-TGBTM',
+    adPageInfo : []
   },
 
   /**

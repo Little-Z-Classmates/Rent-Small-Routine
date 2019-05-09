@@ -1,0 +1,22 @@
+<view class="advertisement">
+    <view class="title"> 
+     {{adPageInfo.adName}}
+    </view>
+    <image src="{{baseUrl + adPageInfo.adFrontImgPath}}"  class="titleImg" />
+
+    <ul class="adOtherInfoList">
+        <li  wx:for="{{adPageInfo.newAdArticleList}}"
+             wx:key="{{index}}" 
+             class="adOtherInfo">
+
+           <view class="adOtherInfoTitle">
+              {{item[0]}}
+           </view>
+           <image class="adOtherInfoImg" src="{{ baseUrl + adPageInfo.adBackStageImgsPath[index]}}" />
+           <view class="adOtherInfoTxt">
+              {{item[1]}}
+           </view>
+
+        </li>
+    </ul>
+</view>

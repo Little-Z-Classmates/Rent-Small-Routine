@@ -1,5 +1,6 @@
 import Toast from '../../miniprogram_npm/vant-weapp/toast/toast';
 const util = require("../../utils/util");
+const requestUrl  = require("../../config/api")
 const appInstance = getApp()
 const QQMapWX = require('../../utils/qq-map/qqmap-wx-jssdk');
 // 实例化 小程序腾讯地图 SDK API核心类
@@ -22,13 +23,11 @@ Page({
     },
     searchPlace:{
        searchPlaceValue : '',
+       searchFlag : false ,
        dataList : [],  // 查询的地址
     }, 
-    swiperImgUrls: [   // 轮播图图片地址
-      'http://pic18.nipic.com/20111213/8791344_093424951000_2.jpg',
-      'http://img3.imgtn.bdimg.com/it/u=2644250761,3672200364&fm=26&gp=0.jpg',
-      'http://pic29.nipic.com/20130601/12122227_123051482000_2.jpg'
-    ],
+    baseUrl : requestUrl.baseUrl, // 基础请求url
+    swiperAd: [],   // 轮播图图片地址
     filterFrame: {   // 筛选层板 
       filterTitleArr: [ // 筛选的 Title 名字
         {
@@ -430,6 +429,16 @@ Page({
 
   getSearchPlaceList(e){  // 得到地址列表数据
    
+    if( e.detail.value != ''){
+      this.setData({
+        'searchPlace.searchFlag' : true
+      })
+    }else{
+      this.setData({
+        'searchPlace.searchFlag' : false
+      })
+    }
+
     this.setData({
       'searchPlace.searchPlaceValue' : e.detail.value
     })
@@ -440,14 +449,20 @@ Page({
       region  : that.data.searchCity.currentCityName, //设置城市名，限制关键词所示的地域范围，非必填参数
       region_fix : 1 ,
       success : function(res){
-        console.log(res.data);
-        
         that.setData({
           'searchPlace.dataList' : res.data
         })
       }
     })
 
+  },
+
+  setValue(e){            // 设置value
+    var value = e.currentTarget.dataset.value
+    this.setData({
+      "searchPlace.searchPlaceValue" : value,
+      "searchPlace.searchFlag" : false,
+    })
   },
 
   // ------------------- 筛选切换 Title Id -------------
@@ -622,20 +637,31 @@ Page({
     }
   },
 
+  //--------------- 路由跳转 ---------------------
+  // 跳转广告页面
+  navigateToAdPage(e){
+    console.log(e.currentTarget.dataset.id);
+    
+    var id = e.currentTarget.dataset.id
+    wx.navigateTo({
+      url : "/pagesIndexSub/advertisement/advertisement?id=" + id
+    })
+  },
+
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    // watch 挂载
+    appInstance.setWatcher(this)
+
     var that = this
 
     // 拿到城市
     var userInfo = JSON.parse(wx.getStorageSync('userInfo'))
     var city = userInfo.city
     city = city.replace('市', '')
-
-    // watch 挂载
-    appInstance.setWatcher(this)
 
     // 得到城市列表
     qqmapsdk.getCityList({
@@ -657,6 +683,17 @@ Page({
       },
       fail: function (error) {
         console.error(error);
+      }
+    })
+
+    // 得到广告信息
+    wx.request({
+      url : requestUrl.advertisement_url,
+      success : function(res){
+          appInstance.globalData.adPageInfo = res.data
+          that.setData({
+              swiperAd : res.data
+          }) 
       }
     })
 

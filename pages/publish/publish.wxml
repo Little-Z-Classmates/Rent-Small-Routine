@@ -59,6 +59,10 @@
                 <text></text>
                 照片格式不能为动图。
             </li>
+            <li>
+                <text></text>
+                !!!最后一张照片为房屋凭证。
+            </li>
         </ul>
     </view>
     <!-- 出租类型 -->
@@ -73,9 +77,8 @@
     <!-- 地理位置 -->
     <view class="geoPosition">
         <view class="geoPositionTitle">地理位置<text style="color:red">*</text></view>
-        <view class="district">
-            <view class="districtName">区</view>
-            <view class="districtDetailed">设置</view>
+        <view class="district">   
+            <view class="districtDetailed {{ placeInfo.title==''?'':'ellipsis'}}" bind:tap="setGeoPosition">{{geoPosition.geoPositionValue}}</view>
         </view>
     </view>
     <!-- 房间 -->

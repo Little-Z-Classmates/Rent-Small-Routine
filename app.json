@@ -5,11 +5,17 @@
     "pages/mine/mine",
     "pages/authorized/index"
   ],
-  "subpackages":[
+  "subpackages": [
     {
       "root": "pagesIndexSub",
       "pages": [
         "advertisement/advertisement"
+      ]
+    },
+    {
+      "root": "pagesPublishSub",
+      "pages": [
+        "geoPosition/geoPosition"
       ]
     }
   ],

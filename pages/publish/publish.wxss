@@ -212,11 +212,18 @@
   line-height: 74rpx;
   height: 120rpx;
 }
-.geoPosition .district .districtName,
 .geoPosition .district .districtDetailed {
   padding: 0 40rpx;
   border: 4rpx solid black;
   border-radius: 20rpx;
+}
+.geoPosition .district .ellipsis {
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 100rpx;
+  line-height: 100rpx;
 }
 .roomAndHall {
   padding-top: 20rpx;

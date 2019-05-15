@@ -263,11 +263,20 @@
         line-height: 74rpx;
         height: 120rpx;
 
-        .districtName,
         .districtDetailed {
             padding: 0 40rpx;
             border: 4rpx solid black;
             border-radius: 20rpx;
+        }
+
+        .ellipsis {
+            width: 90%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            height: 100rpx;
+            line-height: 100rpx;
+
         }
     }
 }
@@ -536,7 +545,7 @@
 }
 
 // 提交
-.submit{
+.submit {
     border-radius: 0;
     margin-top: 20rpx;
 }

@@ -56,174 +56,8 @@ Page({
       filterArea: { // 筛选地区
         id: 0,
         name: '区域',
-        currentSelectLeftId: 0, // 当前区域 左边 id
-        childrenItems: [{
-            id: 0,
-            name: '区域',
-            currentSelectCenterId: 0, // 当前区域 中间的 id
-            childrenItems: [{
-                id: 0,
-                name: '不限',
-                currentSelectRightId: 0, // 当前区域 右边的 id
-                childrenItems: [{
-                  id: 0,
-                  name: '不限',
-                }]
-              },
-              {
-                id: 1,
-                name: '东城',
-                currentSelectRightId: 0, // 当前区域 右边的 id
-                childrenItems: [{
-                    id: 0,
-                    name: '不限A',
-                  },
-                  {
-                    id: 1,
-                    name: '安定门',
-                  },
-                  {
-                    id: 2,
-                    name: '安贞',
-                  },
-                  {
-                    id: 3,
-                    name: '安定门',
-                  },
-                  {
-                    id: 4,
-                    name: '重温热',
-                  },
-                  {
-                    id: 5,
-                    name: '东直门',
-                  },
-                  {
-                    id: 6,
-                    name: '超源码',
-                  },
-                ]
-              },
-              {
-                id: 2,
-                name: '西城',
-                currentSelectRightId: 0, // 当前区域 右边的 id
-                childrenItems: [{
-                    id: 0,
-                    name: '不限A',
-                  },
-                  {
-                    id: 1,
-                    name: '阿萨德门',
-                  },
-                  {
-                    id: 2,
-                    name: '安贞',
-                  },
-                  {
-                    id: 3,
-                    name: '安定门',
-                  },
-                  {
-                    id: 4,
-                    name: '重温热',
-                  },
-                  {
-                    id: 5,
-                    name: '东直门',
-                  },
-                  {
-                    id: 6,
-                    name: '超源码',
-                  },
-                ]
-              },
-            ]
-          },
-          {
-            id: 1,
-            name: '地铁',
-            currentSelectCenterId: 0, // 当前区域 中间的 id
-            childrenItems: [{
-                id: 0,
-                name: '不限',
-                currentSelectRightId: 0, // 当前区域 右边的 id
-                childrenItems: [{
-                  id: 0,
-                  name: '不限',
-                }]
-              },
-              {
-                id: 1,
-                name: '一号线',
-                currentSelectRightId: 0, // 当前区域 右边的 id
-                childrenItems: [{
-                    id: 0,
-                    name: '不限B',
-                  },
-                  {
-                    id: 1,
-                    name: '阿萨德',
-                  },
-                  {
-                    id: 2,
-                    name: '安贞',
-                  },
-                  {
-                    id: 3,
-                    name: '安定门',
-                  },
-                  {
-                    id: 4,
-                    name: '重温热',
-                  },
-                  {
-                    id: 5,
-                    name: '东直门',
-                  },
-                  {
-                    id: 6,
-                    name: '超源码',
-                  },
-                ]
-              },
-              {
-                id: 2,
-                name: '二号线',
-                currentSelectRightId: 0, // 当前区域 右边的 id
-                childrenItems: [{
-                    id: 0,
-                    name: '不限B',
-                  },
-                  {
-                    id: 1,
-                    name: '阿萨德门B',
-                  },
-                  {
-                    id: 2,
-                    name: '安贞',
-                  },
-                  {
-                    id: 3,
-                    name: '安定门',
-                  },
-                  {
-                    id: 4,
-                    name: '重温热',
-                  },
-                  {
-                    id: 5,
-                    name: '东直门',
-                  },
-                  {
-                    id: 6,
-                    name: '超源码',
-                  },
-                ]
-              },
-            ]
-          },
-        ]
+        currentSelectAreaId: -1, // 当前选择的区域的 id
+        childrenItems: []
       },
       filterMode: { // 筛选方式
         currentSelectModeId: -1,
@@ -418,6 +252,7 @@ Page({
 
   // -------------------- 城市 picker -----------------
   bindchangeCity(e) {     // 改变城市的函数 
+    var that = this
     this.setData({
       'searchCity.selectId': e.detail.value,
     })
@@ -425,7 +260,26 @@ Page({
     this.setData({
       'searchCity.currentCityName': cityName
     })
+    var currentCityId = this.data.searchCity.city[e.detail.value].id
+    qqmapsdk.getDistrictByCityId({
+      id : currentCityId,
+      success : function(res){ 
+        var arr = res.result[0]
+        arr.unshift({
+           id : 0 , 
+           fullname : '不限' 
+        })
+        that.setData({
+          "filterFrame.filterArea.childrenItems" : arr
+        })
+      },
+      fail: function(error) {
+        console.error(error);
+      },
+
+    })
   },
+   
 
   getSearchPlaceList(e){  // 得到地址列表数据
    
@@ -473,36 +327,14 @@ Page({
   },
 
   // ----------------- 筛选 : 区域  -------------------- 
-  // 左边切换Id
-  toggleCurrentSelectLeftId(event) {
-    var index = event.currentTarget.dataset['index'];
+  toggleCurrentFilterArea(event){
+    var id = event.currentTarget.dataset['id'];
+    var name = event.currentTarget.dataset['name'];
     this.setData({
-      'filterFrame.filterArea.currentSelectLeftId': index
-    })
-  },
-  // 中间切换Id
-  toggleCurrentSelectCenterId(event) {
-    var index = event.currentTarget.dataset['index'];
-    var sonIndex = event.currentTarget.dataset['sonIndex'];
-    var item = 'filterFrame.filterArea.childrenItems[' + index + '].currentSelectCenterId'
-    this.setData({
-      [item]: sonIndex,
-    })
-  },
-  //右边切换id
-  toggleCurrentSelectRightId(event) {
-    var index = event.currentTarget.dataset['index'];
-    var sonIndex = event.currentTarget.dataset['sonIndex'];
-    var sonSonIndex = event.currentTarget.dataset['sonSonIndex'];
-    var item = 'filterFrame.filterArea.childrenItems[' + index + '].childrenItems[' + sonIndex + '].currentSelectRightId'
-    var name = this.data.filterFrame.filterArea.childrenItems[index].childrenItems[sonIndex].childrenItems[sonSonIndex].name
-
-    this.setData({
-      [item]: sonSonIndex,
+      'filterFrame.filterArea.currentSelectAreaId': id,
       'filterFrame.filterTitleArr[0].name': name,
       'filterFrame.currentSelectTitleId': -1
     })
-
   },
 
   //------------------ 筛选 : 方式 ---------------
@@ -663,7 +495,7 @@ Page({
     var city = userInfo.city
     city = city.replace('市', '')
 
-    // 得到城市列表
+    // 得到城市列表 / 区县
     qqmapsdk.getCityList({
       success: function (res) { //成功后的回调
         // 城市数据
@@ -678,6 +510,26 @@ Page({
           'searchCity.selectId': givenCityIndex,
           'searchCity.city': allCity,
           'searchCity.currentCityName': city,
+        })
+
+        // 得到当前城市的 id
+        var currentCityId =  allCity[givenCityIndex].id
+        qqmapsdk.getDistrictByCityId({
+          id : currentCityId,
+          success : function(res){ 
+            var arr = res.result[0]
+            arr.unshift({
+               id : 0 , 
+               fullname : '不限' 
+            })
+            that.setData({
+              "filterFrame.filterArea.childrenItems" : arr
+            })
+          },
+          fail: function(error) {
+            console.error(error);
+          },
+
         })
 
       },

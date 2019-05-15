@@ -44,59 +44,28 @@
   filterTitleArr="{{filterFrame.filterTitleArr}}"
   filterTitleSort="{{filterFrame.filterTitleSort}}"
   currentSelectTitleId="{{filterFrame.currentSelectTitleId}}">
-    <!-- 地区 -->
+    <!-- 地区 Area -->
     <view 
       slot="{{filterFrame.filterTitleArr[0].id}}" 
       hidden="{{!(filterFrame.filterTitleArr[0].id==filterFrame.currentSelectTitleId)}}"
-      class="filterTitleInfo filterTitleInfoArea">
-        <view class="left">
-            <ul>
-                <li wx:for="{{filterFrame.filterArea.childrenItems}}" 
-                    catch:tap="toggleCurrentSelectLeftId"
-                    class="{{index==filterFrame.filterArea.currentSelectLeftId?'mainColor':''}}"
-                    data-index="{{index}}"
-                    wx:key="{{index}}">
-                    {{item.name}}
-                    <ul style="{{filterFrame.filterArea.currentSelectLeftId==index?'display:block':'display:none'}}">
-                      
-                            <view class="center" >
-                                <li catch:tap="toggleCurrentSelectCenterId"
-                                    class="{{sonIndex==item.currentSelectCenterId?'mainColor':''}}"
-                                    data-index="{{index}}"
-                                    data-son-index="{{sonIndex}}" 
-                                    wx:for-item="sonItem" 
-                                    wx:for-index="sonIndex" 
-                                    wx:for="{{item.childrenItems}}" 
-                                    wx:key="{{sonIndex}}">
-                                    {{sonItem.name }}
-                                    <ul style="{{filterFrame.filterArea.childrenItems[index].currentSelectCenterId == sonIndex?'display:block':'display:none'}}">
-                                        <scroll-view scroll-y  style="height: 480rpx;">
-                                            <view class="right">
-                                                <li class="{{sonSonIndex==sonItem.currentSelectRightId?'mainColor':''}}"
-                                                    catch:tap="toggleCurrentSelectRightId"
-                                                    data-index="{{index}}"
-                                                    data-son-index="{{sonIndex}}"
-                                                    data-son-son-index="{{sonSonIndex}}"
-                                                    wx:for-item="sonSonItem" 
-                                                    wx:for-index="sonSonIndex"
-                                                    wx:for="{{sonItem.childrenItems}}" 
-                                                    wx:key="{{sonSonIndex}}">
-                                                    {{sonSonItem.name}}
-                                                </li>
-                                            </view>
-                                        </scroll-view>
-                                    </ul>
-                                </li>
-                            </view>
-                      
+      class="filterTitleInfo">
 
-                    </ul>
-                </li>
-            </ul>
-        </view>  
+      <scroll-view scroll-y="{{true}}" class="filterTitleInfoAreaScroll">
+        <ul>
+            <li wx:for="{{filterFrame.filterArea.childrenItems}}" 
+                wx:key="{{index}}" 
+                data-name = "{{item.fullname}}"
+                data-id = "{{item.id}}"
+                catch:tap="toggleCurrentFilterArea"
+                class="{{filterFrame.filterArea.currentSelectAreaId == item.id?'mainColor':''}}">
+              {{item.fullname}}
+            </li>
+        </ul>
+      </scroll-view>
+
     </view>
 
-    <!-- 方式 -->
+    <!-- 方式 Mode -->
     <view 
         slot="{{filterFrame.filterTitleArr[1].id}}"
         hidden="{{!(filterFrame.filterTitleArr[1].id==filterFrame.currentSelectTitleId)}}"
@@ -113,7 +82,7 @@
       </ul>
     </view>
 
-    <!-- 租金 -->
+    <!-- 租金 Rent -->
     <view 
         slot="{{filterFrame.filterTitleArr[2].id}}"
         hidden="{{!(filterFrame.filterTitleArr[2].id==filterFrame.currentSelectTitleId)}}"
@@ -156,7 +125,7 @@
         </view>
     </view>
 
-    <!-- 特色 -->
+    <!-- 特色 Feature -->
     <view 
         slot="{{filterFrame.filterTitleArr[3].id}}"
         hidden="{{!(filterFrame.filterTitleArr[3].id==filterFrame.currentSelectTitleId)}}"
@@ -173,20 +142,21 @@
         <button class="submitFeature" catch:tap="filterFeature">提交</button>
     </view>
 
-    <!-- 排序 -->
-    <view slot="sort"
+    <!-- 排序 Sort -->
+    <view 
+          slot="sort"
           hidden="{{!filterFrame.filterTitleSort.flag}}"
           class="filterTitleInfo filterTitleInfoSort">
-     <ul>
-           <li catch:tap="selectSort"
-               data-index="{{index}}"
-               data-name="{{item.name}}"
-               class="{{filterFrame.filterSort.currentSelectSortId==index?'mainColor':''}}"
-               wx:for="{{filterFrame.filterSort.sortList}}" 
-               wx:key="{{index}}">
-               {{item.name}}
-           </li>
-    </ul>
+        <ul>
+            <li catch:tap="selectSort"
+                data-index="{{index}}"
+                data-name="{{item.name}}"
+                class="{{filterFrame.filterSort.currentSelectSortId==index?'mainColor':''}}"
+                wx:for="{{filterFrame.filterSort.sortList}}" 
+                wx:key="{{index}}">
+                {{item.name}}
+            </li>
+        </ul>
     </view>
 </components-filterFrame>
 

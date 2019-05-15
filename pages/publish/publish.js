@@ -1,4 +1,7 @@
 const util = require("../../utils/util");
+const appInstance = getApp()
+import toPromise from '../../utils/to-promise'
+const requestUrl  = require("../../config/api")
 import Dialog from '../../miniprogram_npm/vant-weapp/dialog/dialog';
 import Toast from '../../miniprogram_npm/vant-weapp/toast/toast';
 
@@ -9,13 +12,13 @@ Page({
    */
   data: {
     houseFrontCoverImgPath: '', //封面路径
-    dialog: { // 图片描述弹出框
+    dialog: {               //图片描述弹出框
       show: false,
       currentOtherImgId: -1,
       currentOtherImgInfo: ''
     },
-    houseOtherImgList: [], //房子其他地方的图片路径 及 描述
-    mode: {   //出租类型
+    houseOtherImgList: [],  //房子其他地方的图片路径 及 描述
+    mode: {                 //出租类型
       selectModeId: -1,
       modeList: [
         {
@@ -28,13 +31,25 @@ Page({
         }
       ]
     },
-    roomAndHall: { //房间 室厅
+    geoPosition:{           //地理位置
+      geoPositionValue : ''
+    },
+    placeInfo :{           // 发布页面的地址信息 
+      title     : '',
+      address   : '',  
+      latitude  : '',
+      longitude : '',
+      province  : '',
+      city      : '',
+      district  : '',
+    },
+    roomAndHall: {          //房间 室厅
       roomIndex: 0,
       hallIndex: 0,
       room: [0,1, 2, 3, 4, 5, 6, 7, 8, 9],
       hall: [0,1, 2, 3, 4, 5, 6, 7, 8, 9]
     },
-    toilet: {  //卫生间类型
+    toilet: {               //卫生间类型
       selectToiletId: -1,
       toiletList: [{
           id: 0,
@@ -46,12 +61,12 @@ Page({
         }
       ]
     },
-    acreageValue: '', //面积值             
-    storey: {  //楼层
+    acreageValue: '',       //面积值             
+    storey: {               //楼层
       allStoreyValue: '',
       inStoreyValue: ''
     },
-    payTime: { //付款时长
+    payTime: {              //付款时长
       selectPayTimeId: -1,
       payTimeList: [{
           id: 0,
@@ -71,8 +86,8 @@ Page({
         },
       ]
     },
-    priceValue: '', //价格
-    feature: { //特色
+    priceValue: '',         //价格
+    feature: {              //特色
       selectFeatureList: [],
       featureList: [{
           id: 0,
@@ -117,7 +132,7 @@ Page({
       ]
     },
     houseDescribeValue: '', //房源描述
-    contactWay: { //联系方式  
+    contactWay: {           //联系方式  
       telephone: '',
       weixin: '',
       qq: ''
@@ -258,6 +273,13 @@ Page({
     })
   },
 
+  //------------------ 地理位置 --------------------
+  setGeoPosition(e){
+    wx.navigateTo({
+      url:"../../pagesPublishSub/geoPosition/geoPosition"
+    })
+  },
+
   //------------------ 房间 --------------------
   bindRoomPickerChange(e) {
     this.setData({
@@ -331,7 +353,6 @@ Page({
     var selectFeatureListIndex = newSelectFeatureList.findIndex(item => {
       return (item == id)
     })
-    console.log(selectFeatureListIndex);
 
     // 深拷贝 featureList
     var oldFeatureList = this.data.feature.featureList
@@ -388,60 +409,74 @@ Page({
 
   //------------------ 提交 -------------------------
   submitAllInfo() {
-    
-    if(!this.data.houseFrontCoverImgPath){
-      Toast.fail('封面未上传');
-      return false ; 
-    }
-    else if(this.data.mode.selectModeId == -1 ){
-      Toast.fail('出租类型未选择');
-      return false ; 
-    }
-    else if(this.data.roomAndHall.roomIndex == 0  && this.data.roomAndHall.hallIndex == 0 ){
-      Toast.fail('房间参数未定义');
-      return false ; 
-    }
-    else if(this.data.toilet.selectToiletId == -1){
-      Toast.fail('卫生间类型未定义');
-      return false ; 
-    }
-    else if(!this.data.acreageValue){
-      Toast.fail('面积未填写');
-      return false ; 
-    }
-    else if (!this.data.storey.allStoreyValue && !this.data.storey.inStoreyValue){
-      Toast.fail('楼层信息未填写');
-      return false ;
-    }
-    else if (this.data.payTime.selectPayTimeId == -1 ){
-      Toast.fail('付款时长未选择');
-      return false ;
-    }
-    else if (!this.data.priceValue){
-      Toast.fail('价格未定义');
-      return false ;
-    }
-    else if(!this.data.feature.selectFeatureList.length){
-      Toast.fail('特色未选择');
-      return false ;
-    }
-    else if (!this.data.houseDescribeValue){
-      Toast.fail('房源描述未填写');
-      return false ;
-    }
-    else if (!(/^1[34578]\d{9}$/.test(this.data.contactWay.telephone)) ){
-      Toast.fail('电话格式不合格');
-      return false ;
-    }
+
+    // if(!this.data.houseFrontCoverImgPath){
+    //   Toast.fail('封面未上传');
+    //   return false ; 
+    // }
+    // else if(this.data.mode.selectModeId == -1 ){
+    //   Toast.fail('出租类型未选择');
+    //   return false ; 
+    // }
+    // else if(this.data.placeInfo.title == '' ){
+    //   Toast.fail('未选择地理位置');
+    //   return false ; 
+    // }
+    // else if(this.data.roomAndHall.roomIndex == 0  && this.data.roomAndHall.hallIndex == 0 ){
+    //   Toast.fail('房间参数未定义');
+    //   return false ; 
+    // }
+    // else if(this.data.toilet.selectToiletId == -1){
+    //   Toast.fail('卫生间类型未定义');
+    //   return false ; 
+    // }
+    // else if(!this.data.acreageValue){
+    //   Toast.fail('面积未填写');
+    //   return false ; 
+    // }
+    // else if (!this.data.storey.allStoreyValue && !this.data.storey.inStoreyValue){
+    //   Toast.fail('楼层信息未填写');
+    //   return false ;
+    // }
+    // else if (this.data.payTime.selectPayTimeId == -1 ){
+    //   Toast.fail('付款时长未选择');
+    //   return false ;
+    // }
+    // else if (!this.data.priceValue){
+    //   Toast.fail('价格未定义');
+    //   return false ;
+    // }
+    // else if(!this.data.feature.selectFeatureList.length){
+    //   Toast.fail('特色未选择');
+    //   return false ;
+    // }
+    // else if (!this.data.houseDescribeValue){
+    //   Toast.fail('房源描述未填写');
+    //   return false ;
+    // }
+    // else if (!(/^1[34578]\d{9}$/.test(this.data.contactWay.telephone)) ){
+    //   Toast.fail('电话格式不合格');
+    //   return false ;
+    // }
 
 
     // 其他照片
     var oldHouseOtherImgList = this.data.houseOtherImgList
     var newHouseOtherImgList = util.deepCopy(oldHouseOtherImgList) || []
+    if( newHouseOtherImgList.length != 0 ){
+      newHouseOtherImgList.forEach( item =>{
+         if(item.info == "✎描述"){
+            item.info = ""
+         }
+      })
+    }
     
     // 出租类型
     var oldMode = this.data.mode.modeList[this.data.mode.selectModeId]  
     var newMode = util.deepCopy(oldMode) 
+
+    // 地理位置
+    var placeInfo = this.data.placeInfo
 
     // 房间参数
     var room = {
@@ -450,7 +485,7 @@ Page({
     }
 
     // 卫生间
-    var oldToilet = this.data.toilet.toiletList[this.data.mode.selectToiletId]  
+    var oldToilet = this.data.toilet.toiletList[this.data.toilet.selectToiletId]  
     var newToilet = util.deepCopy(oldToilet) 
  
     // 付款时长
@@ -467,13 +502,21 @@ Page({
       })
     })
 
+    var that = this
+    const toPromiseWx = toPromise(wx)
+    const wxRequest = toPromiseWx('request')
+    const wxUploadFile = toPromiseWx('uploadFile')
+
     var sendObj = {
-       userId : '',
+       openid  : wx.getStorageSync('openid'),
+       houseId : (new Date()).getTime(),
+       addRentHouseInfo_url : requestUrl.addRentHouseInfo_url,
        img:{
           houseFrontCoverImgPath : this.data.houseFrontCoverImgPath,
           houseOtherImgList :  newHouseOtherImgList    
        },
        mode : newMode,
+       placeInfo : placeInfo,
        room : room,
        toilet  : newToilet,
        acreage : this.data.acreageValue,
@@ -484,23 +527,120 @@ Page({
        houseDescribeValue : this.data.houseDescribeValue,
        contactWay : this.data.contactWay
     }
+
+    // 上传其他图片
+    var uploadFileFunc = function (startIndex,endIndex){
+      if ( startIndex <= endIndex ){
+        wxUploadFile({
+          url : sendObj.addRentHouseInfo_url,
+          filePath : sendObj.img.houseOtherImgList[startIndex].imgPath,
+          name : 'publishImg',
+          formData:{
+            openid  : sendObj.openid,
+            houseid : sendObj.houseId,
+            setSubmitMode : 'img',    // 提交类型为 图片 此项为 img , 否则为 空
+            imgMode : "other",        // 图片类型 : cover 封面 / other 其他图片
+            index   : startIndex,     // 图片类型为 cover 为空, 为 other , 此项为每张图片的编号
+            otherImgInfo : JSON.stringify(sendObj.img.houseOtherImgList[startIndex])  // 图片的 List
+          },
+        })
+        .then( res =>{
+          console.log( res.data + ',' + startIndex );
+          startIndex++
+          return uploadFileFunc(startIndex,endIndex)
+        })
+      }
+    }
+
+    wxUploadFile({
+      url : sendObj.addRentHouseInfo_url,
+      filePath : sendObj.img.houseFrontCoverImgPath,
+      name : 'publishImg',
+      formData:{
+        openid  : sendObj.openid,
+        houseid : sendObj.houseId,
+        setSubmitMode : 'img', // 提交类型为 图片 此项为 img , 否则为 空
+        imgMode : "cover",     // 图片类型 : cover 封面 / other 其他图片
+        index   : '',          // 图片类型为 cover 为空, 为 other , 此项为每张图片的编号
+        houseOtherImgListInfo : ''  // 图片类型为 other 时 , 图片的信息
+      },
+    })
+    .then( res =>{
+      console.log( res.data );
+      var endIndex = sendObj.img.houseOtherImgList.length-1
+      uploadFileFunc(0,endIndex)
+
+      wxRequest({
+        url : sendObj.addRentHouseInfo_url,
+        method : 'POST',
+        data : {
+          openid  : sendObj.openid,
+          houseid : sendObj.houseId,
+          setSubmitMode : '',
+          mode      : JSON.stringify( sendObj.mode ),
+          placeInfo : JSON.stringify( sendObj.placeInfo ),
+          placeInfo : JSON.stringify( sendObj.placeInfo ),
+          room      : JSON.stringify( sendObj.room ),
+          toilet    : JSON.stringify( sendObj.toilet ),
+          acreage   : JSON.stringify( sendObj.acreage ),
+          storey    : JSON.stringify( sendObj.storey ),
+          payTime   : JSON.stringify( sendObj.payTime ),
+          price     : JSON.stringify( sendObj.price ),
+          price     : JSON.stringify( sendObj.price ),
+          feature   : JSON.stringify( sendObj.feature ),
+          houseDescribeValue : JSON.stringify( sendObj.houseDescribeValue ),
+          contactWay : JSON.stringify( sendObj.contactWay ),
+        },
+        success : function (res){
+          console.log( res.data )
+        }
+      })
+
+    })
+    
+
+
   },
 
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {},
+  onLoad: function (options) {
+    if(appInstance.globalData.placeInfo.title == ''){
+      this.setData({
+        'geoPosition.geoPositionValue' : '设置' 
+      })
+    }else{
+      this.setData({
+        'placeInfo' : appInstance.globalData.placeInfo,
+        'geoPosition.geoPositionValue' : appInstance.globalData.placeInfo.address + appInstance.globalData.placeInfo.title
+      })
+    }
+  },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {},
+  onReady: function () {
+
+  },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {},
+  onShow: function () {
+    if(appInstance.globalData.placeInfo.title == ''){
+      this.setData({
+        'geoPosition.geoPositionValue' : '设置' 
+      })
+    }else{
+      this.setData({
+        'placeInfo' : appInstance.globalData.placeInfo,
+        'geoPosition.geoPositionValue' : appInstance.globalData.placeInfo.address + appInstance.globalData.placeInfo.title
+      })
+    }
+  },
 
   /**
    * 生命周期函数--监听页面隐藏

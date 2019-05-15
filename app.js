@@ -9,9 +9,28 @@ App({
   },
 
   globalData: {
-    userInfo: {},
+    userInfo: {
+      avatarUrl : '', // 头像地址
+      nickName  : '', // 用户名
+      province  : '', // 省
+      city      : '', // 市
+      district  : '', // 区
+      localtion :{    // 地理位置
+        latitude  : '',
+        longitude : ''
+      }, 
+    },
     TX_map_key: 'JKBBZ-WNNW4-GCOUI-X66Y3-J7PFF-TGBTM',
-    adPageInfo : []
+    adPageInfo : [],
+    placeInfo :{        // 发布页面的地址信息 
+      title     : '',
+      address   : '',  
+      latitude  : '',
+      longitude : '',
+      province  : '',
+      city      : '',
+      district  : '',
+   }
   },
 
   /**
@@ -58,6 +77,9 @@ App({
         // 得到经纬度
         (res) => {
           let localtion = res.latitude + ',' + res.longitude
+          // 存 地理位置
+          that.globalData.userInfo.localtion.latitude = res.latitude
+          that.globalData.userInfo.localtion.longitude = res.longitude
           return wxRequest({
             url: 'https://apis.map.qq.com/ws/geocoder/v1/',
             data: {
@@ -69,9 +91,15 @@ App({
       )
       .then(
         // 存入city
-        (res) => {
+        (res) => {  
+          var province = res.data.result.address_component.province
           var city = res.data.result.address_component.city
+          var district = res.data.result.address_component.district
+          // 存当前的省市区
+          that.globalData.userInfo.province = province
           that.globalData.userInfo.city = city
+          that.globalData.userInfo.district = district
+
           return wxGetSetting()
         }
       )
@@ -85,6 +113,7 @@ App({
           }else{
             wx.getUserInfo({
               success (res){
+                // 存头像地址 和 用户名
                 that.globalData.userInfo.avatarUrl = res.userInfo.avatarUrl
                 that.globalData.userInfo.nickName = res.userInfo.nickName
                 wx.removeStorage({

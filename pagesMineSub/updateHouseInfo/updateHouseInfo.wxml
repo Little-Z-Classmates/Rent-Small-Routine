@@ -216,5 +216,5 @@
             </view>
         </view>
     </view>
-    <button class="submit" type="primary" bindtap="submitBefore">提交</button>
+    <button class="submit" type="primary" bindtap="submitBefore">修改</button>
 </view>

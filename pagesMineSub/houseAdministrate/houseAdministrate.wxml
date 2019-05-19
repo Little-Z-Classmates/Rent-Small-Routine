@@ -1,0 +1,32 @@
+<van-dialog id="van-dialog" />
+<view class="houseAdministrate">
+    <view class="houseInfoList" wx:for="{{houseInfoList}}" wx:key="{{index}}">
+        <view class="auditedStatus" style="{{item.auditedStatus == 'no'?'background-color:red':''}}">{{ item.auditedStatus == "no"?'未审核':'已审核'}}</view>
+        <image src="{{ baseUrl + '/' + item.houseFrontCoverImgPath}}" />
+        <view class="houseInfoRight">
+            <view class="rightTop">
+                <view class="title ellipsis">
+                    {{item.placeInfo.title}}
+                </view>
+                <view class="address ellipsis">
+                    {{item.placeInfo.address}}
+                </view>
+            </view>
+            <view class="rightBottom">
+              <button class="updata" 
+                      type="primary" 
+                      data-houseid="{{item.houseid}}"
+                      bindtap="updateHouseInfo">
+                  修改
+              </button>
+              <button class="delete" 
+                      type="warn" 
+                      data-houseid="{{item.houseid}}"
+                      bindtap="deleteBefore">
+                  删除
+              </button>
+            </view>
+        </view>
+
+    </view>
+</view>

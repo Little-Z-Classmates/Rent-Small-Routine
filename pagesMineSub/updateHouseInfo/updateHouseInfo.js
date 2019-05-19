@@ -1,6 +1,7 @@
 const  util = require("../../utils/util");
 const  appInstance = getApp()
 import toPromise from '../../utils/to-promise'
+const toPromiseWx = toPromise(wx)
 const  requestUrl  = require("../../config/api")
 import Dialog from '../../miniprogram_npm/vant-weapp/dialog/dialog';
 import Toast from '../../miniprogram_npm/vant-weapp/toast/toast';
@@ -11,6 +12,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    openid : '',
+    houseid : '',
     houseFrontCoverImgPath: '', //封面路径
     dialog: {               //图片描述弹出框
       show: false,
@@ -264,7 +267,6 @@ Page({
     })
   },
 
-
   //------------------ 出租 --------------------
   selectMode(e) {
     var modeId = e.currentTarget.dataset.modeId
@@ -409,19 +411,19 @@ Page({
 
   //------------------ 提交 -------------------------
   submitBefore(){
-   var that = this
-   Dialog.confirm({
-     message: '确认提交?'
-    })
-    .then(() => {
-      that.submitAllInfo()
-    })
-    .catch(() => {
-      
-    });
+    var that = this
+    Dialog.confirm({
+      message: '确认修改?'
+     })
+     .then(() => {
+       that.submitAllInfo()
+     })
+     .catch(() => {
+       
+     });
   },
 
-  submitAllInfo() {
+  submitAllInfo(){
 
     if(!this.data.houseFrontCoverImgPath){
       Toast.fail('封面未上传');
@@ -471,295 +473,224 @@ Page({
       Toast.fail('电话格式不合格');
       return false ;
     }
+   
+        // 其他照片
+        var oldHouseOtherImgList = this.data.houseOtherImgList
+        var newHouseOtherImgList = util.deepCopy(oldHouseOtherImgList) || []
+        if( newHouseOtherImgList.length != 0 ){
+          newHouseOtherImgList.forEach( item =>{
+             if(item.info == "✎描述"){
+                item.info = ""
+             }
+          })
+        }
+        
+        // 出租类型
+        var oldMode = this.data.mode.modeList[this.data.mode.selectModeId]  
+        var newMode = util.deepCopy(oldMode) 
+    
+        // 地理位置
+        var placeInfo = this.data.placeInfo
+    
+        // 房间参数
+        var room = {
+          roomNum :  this.data.roomAndHall.roomIndex,
+          hallNum :  this.data.roomAndHall.hallIndex 
+        }
+    
+        // 卫生间
+        var oldToilet = this.data.toilet.toiletList[this.data.toilet.selectToiletId]  
+        var newToilet = util.deepCopy(oldToilet) 
+     
+        // 付款时长
+        var oldPayTime = this.data.payTime.payTimeList[this.data.payTime.selectPayTimeId]  
+        var newPayTime = util.deepCopy(oldPayTime) 
+    
+        // 特色
+        var feature = []
+        this.data.feature.selectFeatureList.forEach ( item =>{
+          this.data.feature.featureList.forEach( listItem =>{
+              if ( item == listItem.id ){
+                feature.push(listItem)
+              }
+          })
+        })
+    
+        // 这个房源的的 data 全部数据
+        var publishData = this.data
+        
+        var that = this
+        const wxRequest = toPromiseWx('request')
+        const wxUploadFile = toPromiseWx('uploadFile')
 
+        // 发送的数据
+        var sendObj = {
+          openid  : this.data.openid,
+          houseid : this.data.houseid,
+          updateHouseInfo_url : requestUrl.updateHouseInfo_url,
+          img:{
+             houseFrontCoverImgPath : this.data.houseFrontCoverImgPath,
+             houseOtherImgList :  newHouseOtherImgList    
+          },
+          mode : newMode,
+          placeInfo : placeInfo,
+          room : room,
+          toilet  : newToilet,
+          acreage : this.data.acreageValue,
+          storey  : this.data.storey,
+          payTime : newPayTime,
+          price   : this.data.priceValue,
+          feature : feature,
+          houseDescribeValue : this.data.houseDescribeValue,
+          contactWay  : this.data.contactWay,
+          publishData : publishData
+        }
 
-    // 其他照片
-    var oldHouseOtherImgList = this.data.houseOtherImgList
-    var newHouseOtherImgList = util.deepCopy(oldHouseOtherImgList) || []
-    if( newHouseOtherImgList.length != 0 ){
-      newHouseOtherImgList.forEach( item =>{
-         if(item.info == "✎描述"){
-            item.info = ""
+        // 上传其他图片 ( 做封装 , 第二个参数为数量-1 , 也就是遍历次数 )
+        var uploadFileFunc = function (startIndex,endIndex){
+         if ( startIndex <= endIndex ){
+           wxUploadFile({
+             url : sendObj.updateHouseInfo_url,
+             filePath : sendObj.img.houseOtherImgList[startIndex].imgPath,
+             name : 'publishImg',
+             formData:{
+               openid  : sendObj.openid,
+               houseid : sendObj.houseid,
+               setSubmitMode : 'img',    // 提交类型为 图片 此项为 img , 否则为 空
+               imgMode : "other",        // 图片类型 : cover 封面 / other 其他图片
+               index   : startIndex,     // 图片类型为 cover 为空, 为 other , 此项为每张图片的编号
+               otherImgInfo : JSON.stringify(sendObj.img.houseOtherImgList[startIndex])  // 图片的 List
+             },
+           })
+           .then( res =>{
+             console.log( res.data + ',' + startIndex );
+             startIndex++
+             return uploadFileFunc(startIndex,endIndex)
+           })
+         }else{
+           wxRequest({
+             url : sendObj.updateHouseInfo_url,
+             method : 'POST',
+             data : {
+               openid  : sendObj.openid,
+               houseid : sendObj.houseid,
+               setSubmitMode : '',
+               mode      : JSON.stringify( sendObj.mode ),
+               placeInfo : JSON.stringify( sendObj.placeInfo ),
+               room      : JSON.stringify( sendObj.room ),
+               toilet    : JSON.stringify( sendObj.toilet ),
+               acreage   : JSON.stringify( sendObj.acreage ),
+               storey    : JSON.stringify( sendObj.storey ),
+               payTime   : JSON.stringify( sendObj.payTime ),
+               price     : JSON.stringify( sendObj.price ),
+               feature   : JSON.stringify( sendObj.feature ),
+               houseDescribeValue : JSON.stringify( sendObj.houseDescribeValue ),
+               contactWay : JSON.stringify( sendObj.contactWay ),
+               publishData : JSON.stringify( sendObj.publishData ),
+             }
+           })
+           .then( res => {
+             
+               console.log( res.data )
+               
+               Toast.success('成功提交');
+               setTimeout( ()=>{
+                wx.navigateTo({
+                  url: "/pagesMineSub/houseAdministrate/houseAdministrate"
+                })
+               },500)
+           })
          }
-      })
-    }
-    
-    // 出租类型
-    var oldMode = this.data.mode.modeList[this.data.mode.selectModeId]  
-    var newMode = util.deepCopy(oldMode) 
-
-    // 地理位置
-    var placeInfo = this.data.placeInfo
-
-    // 房间参数
-    var room = {
-      roomNum :  this.data.roomAndHall.roomIndex,
-      hallNum :  this.data.roomAndHall.hallIndex 
-    }
-
-    // 卫生间
-    var oldToilet = this.data.toilet.toiletList[this.data.toilet.selectToiletId]  
-    var newToilet = util.deepCopy(oldToilet) 
- 
-    // 付款时长
-    var oldPayTime = this.data.payTime.payTimeList[this.data.payTime.selectPayTimeId]  
-    var newPayTime = util.deepCopy(oldPayTime) 
-
-    // 特色
-    var feature = []
-    this.data.feature.selectFeatureList.forEach ( item =>{
-      this.data.feature.featureList.forEach( listItem =>{
-          if ( item == listItem.id ){
-            feature.push(listItem)
-          }
-      })
-    })
-
-    // 这个房源的的 data 全部数据
-    var publishData = this.data
-    
-    var that = this
-    const toPromiseWx = toPromise(wx)
-    const wxRequest = toPromiseWx('request')
-    const wxUploadFile = toPromiseWx('uploadFile')
-
-    // 发送的数据
-    var sendObj = {
-      openid  : wx.getStorageSync('openid'),
-      houseId : (new Date()).getTime(),
-      addRentHouseInfo_url : requestUrl.addRentHouseInfo_url,
-      img:{
-         houseFrontCoverImgPath : this.data.houseFrontCoverImgPath,
-         houseOtherImgList :  newHouseOtherImgList    
-      },
-      mode : newMode,
-      placeInfo : placeInfo,
-      room : room,
-      toilet  : newToilet,
-      acreage : this.data.acreageValue,
-      storey  : this.data.storey,
-      payTime : newPayTime,
-      price   : this.data.priceValue,
-      feature : feature,
-      houseDescribeValue : this.data.houseDescribeValue,
-      contactWay  : this.data.contactWay,
-      publishData : publishData
-   }
-
-    // 上传其他图片 ( 做封装 , 第二个参数为数量-1 , 也就是遍历次数 )
-    var uploadFileFunc = function (startIndex,endIndex){
-      if ( startIndex <= endIndex ){
+        }
+        
         wxUploadFile({
-          url : sendObj.addRentHouseInfo_url,
-          filePath : sendObj.img.houseOtherImgList[startIndex].imgPath,
+          url : sendObj.updateHouseInfo_url,
+          filePath : sendObj.img.houseFrontCoverImgPath,
           name : 'publishImg',
           formData:{
             openid  : sendObj.openid,
-            houseid : sendObj.houseId,
-            setSubmitMode : 'img',    // 提交类型为 图片 此项为 img , 否则为 空
-            imgMode : "other",        // 图片类型 : cover 封面 / other 其他图片
-            index   : startIndex,     // 图片类型为 cover 为空, 为 other , 此项为每张图片的编号
-            otherImgInfo : JSON.stringify(sendObj.img.houseOtherImgList[startIndex])  // 图片的 List
-          },
-        })
-        .then( res =>{
-          console.log( res.data + ',' + startIndex );
-          startIndex++
-          return uploadFileFunc(startIndex,endIndex)
-        })
-      }else{
-        wxRequest({
-          url : sendObj.addRentHouseInfo_url,
-          method : 'POST',
-          data : {
-            openid  : sendObj.openid,
-            houseid : sendObj.houseId,
-            setSubmitMode : '',
-            mode      : JSON.stringify( sendObj.mode ),
-            placeInfo : JSON.stringify( sendObj.placeInfo ),
-            room      : JSON.stringify( sendObj.room ),
-            toilet    : JSON.stringify( sendObj.toilet ),
-            acreage   : JSON.stringify( sendObj.acreage ),
-            storey    : JSON.stringify( sendObj.storey ),
-            payTime   : JSON.stringify( sendObj.payTime ),
-            price     : JSON.stringify( sendObj.price ),
-            feature   : JSON.stringify( sendObj.feature ),
-            houseDescribeValue : JSON.stringify( sendObj.houseDescribeValue ),
-            contactWay : JSON.stringify( sendObj.contactWay ),
-            publishData : JSON.stringify( sendObj.publishData ),
+            houseid : sendObj.houseid,
+            setSubmitMode : 'img', // 提交类型为 图片 此项为 img , 否则为 空
+            imgMode : "cover",     // 图片类型 : cover 封面 / other 其他图片
+            index   : '',          // 图片类型为 cover 为空, 为 other , 此项为每张图片的编号
+            otherImgInfo : ''  // 图片类型为 other 时 , 图片的信息
           }
+        }).then( res =>{
+          console.log( res.data );
+          var endIndex = sendObj.img.houseOtherImgList.length-1
+          uploadFileFunc(0,endIndex)
         })
-        .then( res => {
-          
-            console.log( res.data )
-            that.setData({
-              houseFrontCoverImgPath: '', //封面路径
-              dialog: {               //图片描述弹出框
-                show: false,
-                currentOtherImgId: -1,
-                currentOtherImgInfo: ''
-              },
-              houseOtherImgList: [],  //房子其他地方的图片路径 及 描述
-              mode: {                 //出租类型
-                selectModeId: -1,
-                modeList: [
-                  {
-                    id: 0,
-                    name: '整租',
-                  },
-                  {
-                    id: 1,
-                    name: '合租'
-                  }
-                ]
-              },
-              geoPosition:{           //地理位置
-                geoPositionValue : '设置'
-              },
-              placeInfo :{           // 发布页面的地址信息 
-                title     : '',
-                address   : '',  
-                latitude  : '',
-                longitude : '',
-                province  : '',
-                city      : '',
-                district  : '',
-              },
-              roomAndHall: {          //房间 室厅
-                roomIndex: 0,
-                hallIndex: 0,
-                room: [0,1, 2, 3, 4, 5, 6, 7, 8, 9],
-                hall: [0,1, 2, 3, 4, 5, 6, 7, 8, 9]
-              },
-              toilet: {               //卫生间类型
-                selectToiletId: -1,
-                toiletList: [{
-                    id: 0,
-                    name: '独卫',
-                  },
-                  {
-                    id: 1,
-                    name: '共用'
-                  }
-                ]
-              },
-              acreageValue: '',       //面积值             
-              storey: {               //楼层
-                allStoreyValue: '',
-                inStoreyValue: ''
-              },
-              payTime: {              //付款时长
-                selectPayTimeId: -1,
-                payTimeList: [{
-                    id: 0,
-                    name: '月付'
-                  },
-                  {
-                    id: 1,
-                    name: '季付'
-                  },
-                  {
-                    id: 2,
-                    name: '半年付'
-                  },
-                  {
-                    id: 3,
-                    name: '一年付'
-                  },
-                ]
-              },
-              priceValue: '',         //价格
-              feature: {              //特色
-                selectFeatureList: [],
-                featureList: [{
-                    id: 0,
-                    name: '近地铁',
-                    classFlag: false
-                  },
-                  {
-                    id: 1,
-                    name: '空调',
-                    classFlag: false
-                  },
-                  {
-                    id: 2,
-                    name: '阳台',
-                    classFlag: false
-                  },
-                  {
-                    id: 3,
-                    name: '拎包入住',
-                    classFlag: false
-                  },
-                  {
-                    id: 4,
-                    name: '精装修',
-                    classFlag: false
-                  },
-                  {
-                    id: 5,
-                    name: '新房',
-                    classFlag: false
-                  },
-                  {
-                    id: 6,
-                    name: '随时看房',
-                    classFlag: false
-                  },
-                  {
-                    id: 7,
-                    name: '家私齐全',
-                    classFlag: false
-                  },
-                ]
-              },
-              houseDescribeValue: '', //房源描述
-              contactWay: {           //联系方式  
-                telephone: '',
-                weixin: '',
-                qq: ''
-              }
-            })
-            Toast.success('成功提交');
-        })
-      }
-    }
-
-    wxUploadFile({
-      url : sendObj.addRentHouseInfo_url,
-      filePath : sendObj.img.houseFrontCoverImgPath,
-      name : 'publishImg',
-      formData:{
-        openid  : sendObj.openid,
-        houseid : sendObj.houseId,
-        setSubmitMode : 'img', // 提交类型为 图片 此项为 img , 否则为 空
-        imgMode : "cover",     // 图片类型 : cover 封面 / other 其他图片
-        index   : '',          // 图片类型为 cover 为空, 为 other , 此项为每张图片的编号
-        otherImgInfo : ''  // 图片类型为 other 时 , 图片的信息
-      },
-    }).then( res =>{
-      console.log( res.data );
-      var endIndex = sendObj.img.houseOtherImgList.length-1
-      uploadFileFunc(0,endIndex)
-    })
 
   },
-
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if(appInstance.globalData.placeInfo.title == ''){
-      this.setData({
-        'geoPosition.geoPositionValue' : '设置' 
-      })
-    }else{
-      this.setData({
-        'placeInfo' : appInstance.globalData.placeInfo,
-        'geoPosition.geoPositionValue' : appInstance.globalData.placeInfo.address + appInstance.globalData.placeInfo.title
-      })
-    }
+     var that = this
+     var wxDownloadFile = toPromiseWx('downloadFile')
+     var openid  = wx.getStorageSync('openid')
+     var houseid = options.houseid
+
+     this.setData({
+      openid  : openid,
+      houseid : houseid
+     })
+
+     wx.request({
+       url : requestUrl.getHouseInfo_url,
+       data:{
+        openid  : openid,
+        houseid : houseid
+       },
+       success(res){
+          var data = res.data
+
+          wxDownloadFile({
+            url : requestUrl.baseUrl + '/' + data.houseFrontCoverImgPath
+          })
+          .then( res =>{
+
+            that.setData({
+              houseFrontCoverImgPath : res.tempFilePath
+            })    
+
+            data.houseOtherImgList.forEach ( item =>{
+              item.imgPath = requestUrl.baseUrl + '/' + item.imgPath
+
+              wxDownloadFile({
+                url : item.imgPath
+              })
+              .then( res =>{
+                  item.imgPath = res.tempFilePath
+                  var houseOtherImgList = that.data.houseOtherImgList
+                  houseOtherImgList.push(item)
+                  that.setData({
+                    houseOtherImgList : houseOtherImgList
+                  })
+              })
+
+            })
+          })
+          
+
+          that.setData({
+            mode : data.mode,
+            geoPosition  : data.geoPosition,
+            placeInfo    : data.placeInfo,
+            roomAndHall  : data.roomAndHall,
+            toilet  : data.toilet,
+            acreageValue : data.acreageValue,
+            storey  : data.storey,
+            payTime : data.payTime,
+            priceValue : data.priceValue,
+            feature : data.feature,
+            houseDescribeValue : data.houseDescribeValue,
+            contactWay   : data.contactWay,
+            
+          })
+       }
+     })
   },
 
   /**
@@ -773,40 +704,41 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if(appInstance.globalData.placeInfo.title == ''){
-      this.setData({
-        'geoPosition.geoPositionValue' : '设置' 
-      })
-    }else{
-      this.setData({
-        'placeInfo' : appInstance.globalData.placeInfo,
-        'geoPosition.geoPositionValue' : appInstance.globalData.placeInfo.address + appInstance.globalData.placeInfo.title
-      })
-    }
+
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {},
+  onHide: function () {
+
+  },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {},
+  onUnload: function () {
+
+  },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {},
+  onPullDownRefresh: function () {
+
+  },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {},
+  onReachBottom: function () {
+
+  },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {}
+  onShareAppMessage: function () {
+
+  }
 })

@@ -1,0 +1,69 @@
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.houseAdministrate {
+  padding: 20rpx;
+}
+.houseAdministrate .houseInfoList {
+  height: 260rpx;
+  position: relative;
+  width: 100%;
+  background-color: #f967711e;
+  margin-bottom: 30rpx;
+  border-radius: 20rpx;
+  box-shadow: 4rpx 8rpx 16rpx #888888;
+}
+.houseAdministrate .houseInfoList .auditedStatus {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #7cce01;
+  padding: 2rpx 8rpx 2rpx 8rpx;
+  font-size: 32rpx;
+}
+.houseAdministrate .houseInfoList image {
+  border-top-left-radius: 20rpx;
+  border-bottom-left-radius: 20rpx;
+  width: 45%;
+  height: 100%;
+  float: left;
+}
+.houseAdministrate .houseInfoList .houseInfoRight {
+  width: 55%;
+  float: left;
+  height: 100%;
+}
+.houseAdministrate .houseInfoList .houseInfoRight .rightTop {
+  padding-left: 10rpx;
+  padding-right: 10rpx;
+  padding-top: 10rpx;
+  height: 160rpx;
+}
+.houseAdministrate .houseInfoList .houseInfoRight .rightTop .title {
+  width: 100%;
+  line-height: 80rpx;
+  font-size: 40rpx;
+}
+.houseAdministrate .houseInfoList .houseInfoRight .rightTop .address {
+  width: 100%;
+  line-height: 60rpx;
+  font-size: 30rpx;
+}
+.houseAdministrate .houseInfoList .houseInfoRight .rightBottom {
+  height: 100rpx;
+  display: flex;
+}
+.houseAdministrate .houseInfoList .houseInfoRight .rightBottom .updata {
+  background-color: #447fe1;
+  width: 50%;
+  margin: 0;
+  border-radius: 0;
+}
+.houseAdministrate .houseInfoList .houseInfoRight .rightBottom .delete {
+  margin: 0;
+  width: 50%;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/mine/mine",
     "pages/index/index",
     "pages/publish/publish",
-    "pages/mine/mine",
     "pages/authorized/index"
   ],
   "subpackages": [
@@ -16,6 +16,13 @@
       "root": "pagesPublishSub",
       "pages": [
         "geoPosition/geoPosition"
+      ]
+    },
+    {
+      "root": "pagesMineSub",
+      "pages": [
+        "houseAdministrate/houseAdministrate",
+        "updateHouseInfo/updateHouseInfo"
       ]
     }
   ],

@@ -1,6 +1,76 @@
 @main: #f96771;
 @border: #cccccc;
 
-.mine{
-    background-color: #eee;
+.icon {
+    width: 60rpx;
+    height: 60rpx;
+
+    &_guanli {
+        background: data-uri('../../static/images/管理.png') no-repeat;
+        background-size: 100% 100%;
+    }
+
+    &_shoucang {
+        background: data-uri('../../static/images/收藏.png') no-repeat;
+        background-size: 100% 100%;
+    }
+
+    &_fankui {
+        background: data-uri('../../static/images/用户反馈.png') no-repeat;
+        background-size: 100% 100%;
+    }
+
+    &_guanyu {
+        background: data-uri('../../static/images/关于.png') no-repeat;
+        background-size: 100% 100%;
+    }
+}
+
+.mine {
+    position: relative;
+
+    .headerBar {
+        background-color: #f9677121;
+        height: 200rpx;
+        display:flex;
+        justify-content:center;        
+
+        .headPortrait {
+            width:140rpx;
+            height:140rpx;
+            border-radius:50%;
+            margin-top:30rpx;
+            margin-bottom:30rpx;
+            float:left;
+            
+        }
+
+        .userName {
+            float: left;
+            height: 100%;
+            line-height: 200rpx;
+            padding-left: 40rpx;
+            font-size: 50rpx;
+
+        }
+    }
+
+    .list {
+        width: 100%;
+        height: 200rpx;
+        margin-top: 20rpx;
+        background-color: #f9677121;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .icon {
+            margin-right: 40rpx;
+        }
+
+        view {
+            margin-left: 40rpx;
+            font-size: 50rpx;
+        }
+    }
 }

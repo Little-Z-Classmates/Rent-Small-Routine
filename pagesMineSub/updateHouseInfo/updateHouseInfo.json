@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "van-dialog": "../../miniprogram_npm/vant-weapp/dialog/index",
+    "van-picker": "../../miniprogram_npm/vant-weapp/picker/index",
+    "van-toast": "../../miniprogram_npm/vant-weapp/toast/index"
+  }
+}

@@ -158,7 +158,7 @@
                    value="{{priceValue}}" 
                    type="digit" 
                    placeholder="输入价格" />
-            元
+            元(一个月)
         </view>
     </view>
     <!-- 特色 -->

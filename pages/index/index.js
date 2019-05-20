@@ -16,7 +16,7 @@ Page({
   data: {
     rpxScale: (750 / wx.getSystemInfoSync().windowWidth),
     filterFrameFixedFlag: false, // 筛选版块是否固定定位的标识符
-    searchCity: {      // 查找的城市 
+    searchCity: {                // 查找的城市 
       selectId: 0 ,
       currentCityName : '',
       city: []
@@ -27,8 +27,8 @@ Page({
        dataList : [],  // 查询的地址
     }, 
     baseUrl : requestUrl.baseUrl, // 基础请求url
-    swiperAd: [],   // 轮播图图片地址
-    filterFrame: {   // 筛选层板 
+    swiperAd: [],                 // 轮播图图片地址
+    filterFrame: {                // 筛选层板 
       filterTitleArr: [ // 筛选的 Title 名字
         {
           id: 0,
@@ -61,7 +61,12 @@ Page({
       },
       filterMode: { // 筛选方式
         currentSelectModeId: -1,
-        modeList: [{
+        modeList: [
+          {
+            id: -1,
+            name: '不限',
+          },
+          {
             id: 0,
             name: '整租',
           },
@@ -81,15 +86,18 @@ Page({
           },
           {
             id: 1,
-            name: '≤1500元'
+            name: '≤1500元',
+            price : '0-1500'
           },
           {
             id: 2,
-            name: '1500元-2500元'
+            name: '1500元-2500元',
+            price : '1500-2500'
           },
           {
             id: 3,
-            name: '2500元-4500元'
+            name: '2500元-4500元',
+            price : '2500-4500'
           },
         ]
       },
@@ -154,99 +162,17 @@ Page({
         ]
       }
     },
-    houseFrame: { // 房屋版块
-      houseList: [{
-          imgPath: 'http://www.51gaifang.com/zhishi/UploadFiles_7124/201812/2018122013085945.jpg',
-          place: '安定区颐和园小区',
-          price: '￥2400',
-          mode: {
-            id: 0,
-            name: '整租',
-          },
-          feature: [{
-              id: 0,
-              name: '近地铁',
-            },
-            {
-              id: 1,
-              name: '空调',
-            },
-            {
-              id: 2,
-              name: '阳台',
-            },
-          ],
-          featureStr: '近地铁、空调、阳台'
-        },
-        {
-          img: 'http://img.fuwo.com/tuce/1603/23/dc7f738cf0d011e5859600163e00254c.jpg',
-          place: '安定区颐和园小区',
-          price: '￥2400',
-          mode: [{
-            id: 0,
-            name: '整租',
-          }, ],
-          feature: [{
-              id: 0,
-              name: '近地铁',
-            },
-            {
-              id: 1,
-              name: '空调',
-            },
-            {
-              id: 2,
-              name: '阳台',
-            },
-          ],
-          featureStr: '近地铁、空调、阳台'
-        },
-        {
-          img: 'http://a0.att.hudong.com/43/11/01300000291746125239115587547.jpg',
-          place: '安定区颐和园小区',
-          price: '￥2400',
-          mode: [{
-            id: 0,
-            name: '整租',
-          }, ],
-          feature: [{
-              id: 0,
-              name: '近地铁',
-            },
-            {
-              id: 1,
-              name: '空调',
-            },
-            {
-              id: 2,
-              name: '阳台',
-            },
-          ],
-          featureStr: '近地铁、空调、阳台'
-        },
-        {
-          img: 'http://img1n.soufunimg.com/viewimage/jiancai/business/to8to/201508/21/274/6a38fc30c805a5b7e4ea0837476df005/432x324c.jpg',
-          place: '安定区颐和园小区',
-          price: '￥2400',
-          mode: [{
-            id: 0,
-            name: '整租',
-          }, ],
-          feature: [{
-              id: 0,
-              name: '近地铁',
-            },
-            {
-              id: 1,
-              name: '空调',
-            },
-            {
-              id: 2,
-              name: '阳台',
-            },
-          ],
-        },
-      ]
+    houseFrame: {                 // 房屋版块
+      houseList: []
+    },
+    requestHouseData:{            // 请求到后端的房屋数据
+      latitude   : '',
+      longitude  : '',
+      modeId     : -1,
+      price      : -1,
+      featureId  : [],
+      sortId : 0,
+      TX_map_key :  appInstance.globalData.TX_map_key
     }
   },
 
@@ -313,10 +239,19 @@ Page({
 
   setValue(e){            // 设置value
     var value = e.currentTarget.dataset.value
+    var latitude = e.currentTarget.dataset.latitude
+    var longitude = e.currentTarget.dataset.longitude
+
     this.setData({
       "searchPlace.searchPlaceValue" : value,
       "searchPlace.searchFlag" : false,
+      'requestHouseData.latitude' : latitude,
+      'requestHouseData.longitude' : longitude,
+      'filterFrame.filterArea.currentSelectAreaId' : -1,
+      'filterFrame.filterTitleArr[0].name' : '区域',
     })
+
+    this.recommendHouseRequest()
   },
 
   // ------------------- 筛选切换 Title Id -------------
@@ -330,33 +265,63 @@ Page({
   toggleCurrentFilterArea(event){
     var id = event.currentTarget.dataset['id'];
     var name = event.currentTarget.dataset['name'];
+    var latitude = event.currentTarget.dataset.latitude
+    var longitude = event.currentTarget.dataset.longitude
+    if( latitude != '' ){
+      this.setData({
+        'requestHouseData.latitude' : latitude,
+        'requestHouseData.longitude' : longitude,
+        "searchPlace.searchPlaceValue" : '',
+      })
+    }else{
+      var userInfo = JSON.parse(wx.getStorageSync('userInfo'))
+      var latitude  = userInfo.localtion.latitude
+      var longitude = userInfo.localtion.longitude
+  
+      this.setData({
+        'requestHouseData.latitude' : latitude,
+        'requestHouseData.longitude' : longitude,
+      })
+    }
+
     this.setData({
       'filterFrame.filterArea.currentSelectAreaId': id,
       'filterFrame.filterTitleArr[0].name': name,
       'filterFrame.currentSelectTitleId': -1
     })
+
+    this.recommendHouseRequest()
   },
 
   //------------------ 筛选 : 方式 ---------------
   toggleCurrentFilterMode(event) {
-    var index = event.currentTarget.dataset['index'];
+    var id = event.currentTarget.dataset['id'];
     var name = event.currentTarget.dataset['name'];
+    
     this.setData({
-      'filterFrame.filterMode.currentSelectModeId': index,
+      'filterFrame.filterMode.currentSelectModeId': id,
       'filterFrame.filterTitleArr[1].name': name,
-      'filterFrame.currentSelectTitleId': -1
+      'filterFrame.currentSelectTitleId': -1,
+      'requestHouseData.modeId': id
     })
+    this.recommendHouseRequest()
   },
 
   //------------------ 筛选 : 租金 ---------------
   toggleCurrentFilterRent(event) {
     var index = event.currentTarget.dataset['index'];
     var name = event.currentTarget.dataset['name'];
+    var price = event.currentTarget.dataset['price'] || -1
+
     this.setData({
+      'requestHouseData.price' : price,
       'filterFrame.filterRent.currentSelectRentId': index,
       'filterFrame.filterTitleArr[2].name': name,
       'filterFrame.currentSelectTitleId': -1
     })
+
+    this.recommendHouseRequest()
+
   },
 
   getStartPrice(event) {
@@ -382,13 +347,15 @@ Page({
       Toast.fail('起始价格不能低于最终价格');
       return false
     }
-    var priceStr = rentStart + '-' + rentEnd
+    var price = rentStart + '-' + rentEnd
+    var priceStr = rentStart + '元-' + rentEnd + '元'
     this.setData({
+      'requestHouseData.price' : price,
       'filterFrame.filterRent.currentSelectRentId': -1,
       'filterFrame.filterTitleArr[2].name': priceStr,
       'filterFrame.currentSelectTitleId': -1
     })
-    var priceArr = [rentStart, rentEnd]
+    this.recommendHouseRequest()
   },
 
   //---------------- 筛选 : 特色 ----------------
@@ -423,15 +390,18 @@ Page({
     if (!this.data.filterFrame.filterFeature.currentSelectFeatureId.length) {
       this.setData({
         'filterFrame.filterTitleArr[3].flag': false,
-        'filterFrame.currentSelectTitleId': -1
+        'filterFrame.currentSelectTitleId': -1,
+        'requestHouseData.featureId': []
       })
     } else {
       this.setData({
         'filterFrame.filterTitleArr[3].flag': true,
-        'filterFrame.currentSelectTitleId': -1
+        'filterFrame.currentSelectTitleId': -1,
+        'requestHouseData.featureId': this.data.filterFrame.filterFeature.currentSelectFeatureId
       })
     }
 
+    this.recommendHouseRequest()
   },
 
   //----------------- 筛选 : 排序 ---------------
@@ -445,10 +415,13 @@ Page({
     var index = event.currentTarget.dataset['index'];
     var name = event.currentTarget.dataset['name'];
     this.setData({
+      'requestHouseData.sortId': index,
       'filterFrame.filterTitleSort.name': name,
       'filterFrame.filterSort.currentSelectSortId': index,
       'filterFrame.filterTitleSort.flag': false
     })
+
+    this.recommendHouseRequest()
   },
 
   //----------------- watch ----------------------
@@ -480,6 +453,35 @@ Page({
     })
   },
 
+  //--------------- 获取推荐房源 ---------------------
+  recommendHouseRequest(){
+    var that = this
+    wx.request({
+      url  : requestUrl.getRecommendHouseInfo_url,
+      data : that.data.requestHouseData,
+      success(res){
+        var houseList = res.data
+        // '￥'+ 
+        houseList.forEach( item =>{
+          item.imgPath = that.data.baseUrl + '/' + item.imgPath
+          item.price = '￥'+ item.price 
+          var featureStr = ''
+          if( item.feature.length > 0 ){
+            item.feature.forEach( sonItem =>{
+              featureStr += sonItem.name + '、'
+            })
+            featureStr = featureStr.substr(0,featureStr.length-1)
+          }
+          item.featureStr = featureStr
+        })
+        
+        that.setData({
+          'houseFrame.houseList' : houseList
+        })
+
+      }
+    })  
+  },
 
   /**
    * 生命周期函数--监听页面加载
@@ -549,6 +551,16 @@ Page({
       }
     })
 
+    // 获取附近房源信息
+    var latitude  = userInfo.localtion.latitude
+    var longitude = userInfo.localtion.longitude
+
+    this.setData({
+      'requestHouseData.latitude' : latitude,
+      'requestHouseData.longitude' : longitude,
+    })
+    
+    this.recommendHouseRequest()
   },
 
   /**

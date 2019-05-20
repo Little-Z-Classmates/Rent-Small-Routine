@@ -12,4 +12,5 @@ module.exports = {
   getHouseInfo_url      : baseUrl + v2 + '/getHouseInfo',
   updateHouseInfo_url   : baseUrl + v2 + '/updateHouseInfo',
   deleteHouseInfo_url   : baseUrl + v2 + '/deleteHouseInfo',
+  getRecommendHouseInfo_url : baseUrl + global + '/getRecommendHouseInfo',
 }

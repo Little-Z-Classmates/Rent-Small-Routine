@@ -134,3 +134,34 @@ sortId |Y|array|排序id , 0是默认, 1是升序,2是降序
       {房源信息1},
       {房源信息2}
     ]
+---------------------------------------------------
+
+## 9. 获取房源详细信息
+### 请求URL: 
+    baseUrl + /v1/getHouseDetaileInfo
+### 请求方式: 
+    GET
+### 请求参数类型:
+参数|是否必选|类型|说明|
+:--:|:--:|:--:|:--:
+openid  |Y|string|房源的openid
+houseid |Y|string|房源的houseid
+myopenid |Y|string|我的openid
+### 返回数据: 
+    {房源信息}
+---------------------------------------------------
+
+## 10. 收藏/取消收藏
+### 请求URL: 
+    baseUrl + /v1/collectHouse
+### 请求方式: 
+    GET
+### 请求参数类型:
+参数|是否必选|类型|说明|
+:--:|:--:|:--:|:--:
+openid  |Y|string|房源的openid
+collectFlag  |Y|string|房源收藏与取消标识符 ( true 为收藏,false 为取消 )
+collectHouseid |Y|string|房源的houseid
+myopenid |Y|string|我的openid
+### 返回数据: 
+    '收藏成功/取消收藏'

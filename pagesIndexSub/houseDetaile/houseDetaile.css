@@ -1,0 +1,49 @@
+.icon {
+  width: 60rpx;
+  height: 60rpx;
+}
+.icon_shoucang_true {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB50lEQVRYR+2WTVLbQBCFX7sqI+9ibgAniG8Q3wDnBDELDLuMToA5gYZdrCxiTgDcwJwAcwJyBGcXTar8UqMqgdBfaYSDWaCNXaXpeZ9e90y3YMeP7FgfbxeAEz34q+QQ4HAjGAqxBrAS4kb9MKsq5+yxHlJwCMD9DnrECpDVB8sbWRgXX3oqHfgz1VqAM4gMqoIILnsbhBmIE970EAlkVJlSck2RWX8eXRTflwCSabiA4Gub2hDhkVtHys826wEugrlJY7LnGUAy1TOInLXbrOMq8jyIzawEwFO9bze4q7O9o1w5jFwri4OsJh4dSPMuEm1NqGEjkmE/NsYtyQGESxF8fh0A3PbjKC3Yd4C35MCOizA9hpSH1yhClXCvdAydsM8t2BVUgAs1j3TlTegakFXyC4KPXQUa44jfynI/35gqeoEeQ+Tq/wDwSxCb69pekL2wJ6Eh8G2bEEXrK1OQF9xqPRCXQRxNqj6ocSJKTkI3eHx6oRP3wTwa1u3RCJAWZSDLF0Dcq4SjumnoWS+oI3QQiZJr30ZF4jawHDeJtwLIwLxqoiHnxQ/1mopbQXiIeznQyglP8U4ALsie6klxEHUDqvpuFr4nxisF+c3zEF3FOzvwlA49dv+L16uPC50d8BFpWvsO8A+Mvt0hhXq0pQAAAABJRU5ErkJggg==") no-repeat;
+  background-size: 100% 100%;
+}
+.icon_shoucang_false {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAClUlEQVRYR+2XPW/TUBiFz2sU22MGdsKOUAZGhPILIEiMlYhQm2SrvTEhr0w2W+sOCT8AyZ0Zkp8QBmYimJFACCl2VB907TjNh5MmjlEZ8BTZ997z+LxfjuCWL7llffzbAOxatZDyDGAzc0qAsVCGlYiX0vd+qPtsWdXQkJcC1gnUrl2VwBBeypk33uR0rgPqwMiAS8p9TWO/AgyzQ6Zdq0FKMyaaELhCViHyHGQgRKBfeCMlptZdxagDYolwoIewM+BFmDWA6MSqxyKBgJbhe8Em8gRSh6WeG77nbMulSdtS64414igDXHD0emtipS4jjWyuLjw0WcOT0zfU5NgI8XDRiSUHJm17eEejUznzhqkTaJi+5x0qnu2fdKyvIEam7z1dcyCNmTim7zZU8kWxOHpEKy9uRYGiju2RPNI1PMpyau5A2Lb7AAMVd/W7bHEFHXWtFomeUHq6775S9+YAk7Y9Nn03KaGwYwfGuTsvvaJvvLpPuRzHGBDyyfTd+kYAZZV+7iYZXualqkFEXBI/Td+tLgGEHXtknKdUfwsgyQHgNBdgMQSqHMtMvnkVtO2xgPcIfDZ978GqA4HEdMqu/0w8TUDpAQRivjUu3r1eAkgTRFqG77bKjLs6a9Y1v0CkCvJ7bhmqhYuNqCyImfgAIvX07eWDceG+yG/FavrFMiyrFS+Jk6Dg29ZWnFTAbBgdCrEmDvzWiMdbh9E8YQ6E2FV8KQlXY17UiX3EtwIUCce+4jcC7ANRRHwngAUIz4jYzOuQRcV3BtgGcYj4XgB5EIeK7w2QQVBwJjHeU0M76XCqyWyo85s6aqE/JrMS/SiCu0mvJ35p5JMig6wQQCLatWrTq/SzvDKFU3R8Fwa4ydpdn/8H+APLF9Iwt2DOngAAAABJRU5ErkJggg==") no-repeat;
+  background-size: 100% 100%;
+}
+.outerIcon {
+  position: fixed;
+  right: 70rpx;
+  top: 70rpx;
+  border: 4rpx solid #f96771;
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+.houseDetaile {
+  background-color: #fff;
+  padding: 40rpx 0;
+}
+.houseDetaile .title {
+  text-align: center;
+  font-size: 64rpx;
+  margin-bottom: 20rpx;
+}
+.houseDetaile .titleImg {
+  width: 94%;
+  margin-top: 20rpx;
+  border-radius: 20rpx;
+  margin: 0 3%;
+}
+.houseDetaile .info {
+  background-color: #ccc;
+  font-size: 32rpx;
+  padding: 4%;
+  margin-top: 20rpx;
+  line-height: 44rpx;
+}
+.houseDetaile .houseOtherImgListInfo {
+  margin-top: 20rpx;
+}

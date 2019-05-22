@@ -1,7 +1,11 @@
 <van-dialog id="van-dialog" />
-<view class="houseAdministrate">
-    <view class="houseInfoList" wx:for="{{houseInfoList}}" wx:key="{{index}}">
-        <view class="auditedStatus" style="{{item.auditedStatus == 'no'?'background-color:red':''}}">{{ item.auditedStatus == "no"?'未审核':'已审核'}}</view>
+<view class="collectHouse">
+    <view class="houseInfoList" 
+          catchtap="toHouseInfoPage"
+          data-openid="{{item.openid}}"
+          data-houseid="{{item.houseid}}"
+          wx:for="{{collectHouseList}}"
+          wx:key="{{index}}">
         <image src="{{ baseUrl + '/' + item.houseFrontCoverImgPath}}" />
         <view class="houseInfoRight">
             <view class="rightTop">
@@ -16,14 +20,8 @@
               <button class="updata" 
                       type="primary" 
                       data-houseid="{{item.houseid}}"
-                      bindtap="updateHouseInfo">
-                  修改
-              </button>
-              <button class="delete" 
-                      type="warn" 
-                      data-houseid="{{item.houseid}}"
-                      bindtap="deleteBefore">
-                  删除
+                      catchtap="beforeCancelCollection">
+                  取消收藏
               </button>
             </view>
         </view>

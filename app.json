@@ -9,7 +9,8 @@
     {
       "root": "pagesIndexSub",
       "pages": [
-        "advertisement/advertisement"
+        "advertisement/advertisement",
+        "houseDetaile/houseDetaile"
       ]
     },
     {
@@ -22,7 +23,9 @@
       "root": "pagesMineSub",
       "pages": [
         "houseAdministrate/houseAdministrate",
-        "updateHouseInfo/updateHouseInfo"
+        "updateHouseInfo/updateHouseInfo",
+        "collectHouse/collectHouse",
+        "aboutUs/aboutUs"
       ]
     }
   ],

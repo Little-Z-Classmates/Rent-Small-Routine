@@ -173,7 +173,11 @@
 <view class="houseFrame" style="{{filterFrameFixedFlag?'padding-top: 100rpx;':''}}">
     <text class="title">精选推荐</text>
     <ul>
-        <li wx:for="{{houseFrame.houseList}}" wx:key="{{index}}">
+        <li bind:tap="navigateToHouseDetailePage" 
+            data-openid="{{item.openid}}"
+            data-houseid="{{item.houseid}}"
+            wx:for="{{houseFrame.houseList}}" 
+            wx:key="{{index}}">
             <image src="{{item.imgPath}}"  lazy-load="{{true}}" class="houseImg" />
             <view class="houseInfo">
                 <view class="top">

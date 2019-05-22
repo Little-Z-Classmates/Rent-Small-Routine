@@ -34,6 +34,7 @@
   width: 55%;
   float: left;
   height: 100%;
+  position: relative;
 }
 .houseAdministrate .houseInfoList .houseInfoRight .rightTop {
   padding-left: 10rpx;
@@ -54,6 +55,9 @@
 .houseAdministrate .houseInfoList .houseInfoRight .rightBottom {
   height: 100rpx;
   display: flex;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
 }
 .houseAdministrate .houseInfoList .houseInfoRight .rightBottom .updata {
   background-color: #447fe1;

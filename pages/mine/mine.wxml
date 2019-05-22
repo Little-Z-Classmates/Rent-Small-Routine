@@ -1,3 +1,18 @@
+<!-- 调用 dialog -->
+<van-dialog use-slot 
+            title="反馈问题"
+            show="{{ dialog.show }}" 
+            show-cancel-button 
+            bind:close="dialogClose" 
+            bind:confirm="dialogSetInfo">
+    <view class="dialog">
+        <textarea bind:blur="setInfo"
+                  class="dialogTextarea" 
+                  value="{{dialog.currentOtherImgInfo}}" 
+                  focus auto-height 
+                  placeholder="请输入反馈的问题" />
+    </view>
+</van-dialog>
 <view class="mine">
   <!-- 头部 -->
   <view class="headerBar">
@@ -10,17 +25,17 @@
     <view>房源管理</view>
   </view>
   <!-- 我的收藏 -->
-  <view class="list">
+  <view class="list" bind:tap="collectHouse">
     <icon class="icon icon_shoucang" />
     <view>我的收藏</view>
   </view>
   <!-- 我的反馈 -->
-  <view class="list">
+  <view class="list" bindtap="toggleDialog">
     <icon class="icon icon_fankui" />
     <view>反馈问题</view>
   </view>
   <!-- 关于我们 -->
-  <view class="list">
+  <view class="list" bindtap="aboutUs">
     <icon class="icon icon_guanyu" />
     <view>关于我们</view>
   </view>

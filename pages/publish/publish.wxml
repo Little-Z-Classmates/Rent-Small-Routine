@@ -6,7 +6,12 @@
             bind:close="dialogClose" 
             bind:confirm="dialogSetInfo">
     <view class="dialog">
-        <textarea bind:blur="setInfo" class="dialogTextarea" value="{{dialog.currentOtherImgInfo}}" focus auto-height placeholder="请输入照片描述信息" />
+        <textarea bind:blur="setInfo"
+                  class="dialogTextarea" 
+                  value="{{dialog.currentOtherImgInfo}}" 
+                  focus 
+                  auto-height 
+                  placeholder="请输入照片描述信息"/>
     </view>
 </van-dialog>
 <van-dialog id="van-dialog" />

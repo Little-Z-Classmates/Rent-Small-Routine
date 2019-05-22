@@ -8,45 +8,49 @@ Page({
    */
   data: {
      baseUrl : requestUrl.baseUrl,
-     houseInfoList : [],
+     collectHouseList : []
   },
 
-  updateHouseInfo(e){
-     var houseid = e.currentTarget.dataset.houseid
-     wx.navigateTo({
-       url : `/pagesMineSub/updateHouseInfo/updateHouseInfo?houseid=${houseid}`
-     })
-  },
-
-
-  deleteBefore(e){
+  beforeCancelCollection(e){
     var that = this
     Dialog.confirm({
-      message: '确认删除?'
+      message: '确认取消?'
      })
      .then(() => {
-       var houseid = e.currentTarget.dataset.houseid
-       that.deleteHouseInfo(houseid)
-     })
-     .catch(() => {
-     });
+      var houseid = e.currentTarget.dataset.houseid
+      that.CancelCollection(houseid)
+    })
+    .catch(() => {
+    });
   },
 
-  deleteHouseInfo(houseid){
+  CancelCollection(houseid){
     var that = this
-    var openid = wx.getStorageSync('openid')
-
+    var myOpenid = wx.getStorageSync('openid')
+    var collectHouseid = houseid
+    var collectFlag = false
+    console.log(myOpenid);
+    console.log(collectHouseid);
     wx.request({
-       url : requestUrl.deleteHouseInfo_url,
-       data:{
-         openid  : openid,
-         houseid : houseid
-       },
-       success(res){
-         console.log(res.data);    
-         that.onLoad()
-       }
-     })
+      url : requestUrl.collectHouse_url,
+      data:{
+        myOpenid : myOpenid,
+        collectHouseid : collectHouseid,
+        collectFlag : collectFlag
+      },
+      success(res){
+        console.log(res.data);
+        that.onLoad()
+      }
+ })
+  },
+
+  toHouseInfoPage(e){
+    var openid = e.currentTarget.dataset.openid
+    var houseid = e.currentTarget.dataset.houseid
+    wx.navigateTo({
+     url : `/pagesIndexSub/houseDetaile/houseDetaile?openid=${openid}&houseid=${houseid}` 
+   })
   },
 
   /**
@@ -56,17 +60,16 @@ Page({
     var that = this
     var openid = wx.getStorageSync('openid')
     wx.request({
-      url : requestUrl.houseInfoList_url,
+      url : requestUrl.getCollectHouseList_url,
       data:{
         openid : openid,
       },
       success(res){
         that.setData({
-          houseInfoList : res.data
+          collectHouseList : res.data
         })
      }
     })
-
   },
 
   /**

@@ -1,0 +1,34 @@
+<view class="houseDetaile">
+    <view class="outerIcon" bind:tap="collectHouse">
+        <icon class="icon icon_shoucang_{{houseInfo.shoucangFlag}}" />
+    </view>
+    <view class="title">
+      {{houseInfo.placeInfo.title}}
+    </view>
+    <image class="titleImg"  src="{{houseInfo.houseFrontCoverImgPath}}"/>
+    <view class="info">
+        <view class="intotitle">房源信息</view>
+        <view class="mode">出租类型 : {{houseInfo.name}}</view>
+        <view class="address">地址 : {{houseInfo.placeInfo.address + houseInfo.placeInfo.title}}</view>
+        <view class="room">房间 : {{houseInfo.room.roomNum }}室 {{houseInfo.room.hallNum }}厅</view>
+        <view class="toilet">卫生间 : {{houseInfo.toilet.name }}</view>
+        <view class="acreage">面积 : {{houseInfo.acreage}}㎡</view>
+        <view class="payTime">付款时长 : {{houseInfo.payTime.name}}</view>
+        <view class="price">价格 : {{houseInfo.price}}元(一个月)</view>
+        <view class="featureStr">特色 : {{houseInfo.featureStr}}</view>
+        <view class="houseDescribeValue">描述 : {{houseInfo.houseDescribeValue}}</view>
+        <view class="contactWay">
+            联系方式 : 
+            <view class="telephone">电话 : {{houseInfo.contactWay.telephone}}</view>
+            <view class="weixin">微信 : {{houseInfo.contactWay.weixin?houseInfo.contactWay.weixin : '无'}}</view>
+            <view class="qq">微信 : {{houseInfo.contactWay.qq?houseInfo.contactWay.qq : '无'}}</view>
+        </view>
+    </view>
+    <view class="houseOtherImgListInfo" wx:for="{{houseInfo.houseOtherImgListInfo}}" wx:key="{{index}}">
+        <view class="imgTitle">
+            {{item.info}}
+        </view>
+        <image class="titleImg" src="{{item.imgPath}}" />
+    </view>
+    
+</view>

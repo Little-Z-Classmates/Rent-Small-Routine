@@ -443,13 +443,22 @@ Page({
   },
 
   //--------------- 路由跳转 ---------------------
+  
   // 跳转广告页面
   navigateToAdPage(e){
-    console.log(e.currentTarget.dataset.id);
     
     var id = e.currentTarget.dataset.id
     wx.navigateTo({
       url : "/pagesIndexSub/advertisement/advertisement?id=" + id
+    })
+  },
+
+  //跳转到 房屋详情页面
+  navigateToHouseDetailePage(e){
+     var openid = e.currentTarget.dataset.openid
+     var houseid = e.currentTarget.dataset.houseid
+     wx.navigateTo({
+      url : `/pagesIndexSub/houseDetaile/houseDetaile?openid=${openid}&houseid=${houseid}` 
     })
   },
 

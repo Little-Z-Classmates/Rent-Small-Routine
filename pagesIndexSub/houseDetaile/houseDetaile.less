@@ -1,0 +1,65 @@
+@main: #f96771;
+@border: #cccccc;
+
+.icon {
+    width: 60rpx;
+    height: 60rpx;
+
+    
+    &_shoucang_true {
+        background: data-uri('../../static/images/爱心选中.png') no-repeat;
+        background-size: 100% 100%;
+    }
+
+    &_shoucang_false {
+        background: data-uri('../../static/images/爱心未选中.png') no-repeat;
+        background-size: 100% 100%;
+    }
+
+}
+
+.outerIcon{
+    position:fixed;
+    right:70rpx;
+    top:70rpx;
+    border: 4rpx solid #f96771;
+    width: 80rpx;
+    height: 80rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%
+}
+
+.houseDetaile {
+    background-color: #fff;
+    padding: 40rpx 0;
+
+    .title {
+        text-align: center;
+        font-size: 64rpx;
+        margin-bottom: 20rpx;
+
+    }
+
+    .titleImg {
+        width: 94%;
+        margin-top: 20rpx;
+        border-radius: 20rpx;
+        margin: 0 3%;
+
+    }
+
+    .info {
+        background-color: #ccc;
+        font-size: 32rpx;
+        padding: 4%;
+        margin-top: 20rpx;
+        line-height: 44rpx;
+
+    }
+
+    .houseOtherImgListInfo {
+        margin-top: 20rpx;
+    }
+}

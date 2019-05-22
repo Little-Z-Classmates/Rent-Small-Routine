@@ -243,7 +243,6 @@ Page({
         this.setData({
           'dialog.show': false,
           'dialog.currentOtherImgInfo': '',
-          'dialog.currentOtherImgId': -1,
         })
       }, 100)
     }

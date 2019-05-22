@@ -109,7 +109,8 @@ Page({
   },
 
   oneMarker(latitude,longitude){
-     var arr = [{
+     var arr = [
+       {
       iconPath: '/static/images/定位.png',
       id: 0,
       latitude  : latitude,
